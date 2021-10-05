@@ -86,7 +86,7 @@ namespace Sagrada
             left = x;
             top = y;
 
-            int xPos = x;
+            int xPos = left;
             int yPos;
 
             for (int a = 0; a < ROWS; a++)
@@ -135,7 +135,7 @@ namespace Sagrada
                     else if (requirementArray[a, b] != null)
                     {
                         currentDice = requirementArray[a, b];
-                        currentDice.MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + 50, b * (DICE_SIZE + PEN_THICKNESS) + 50);
+                        currentDice.MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + left, b * (DICE_SIZE + PEN_THICKNESS) + top);
                     }
                     else
                     {

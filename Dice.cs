@@ -38,10 +38,17 @@ namespace Sagrada
             get { return number; }
         }
 
-        public bool IsMouseOn(int x, int y)
-        {
-            throw new NotImplementedException();
-        }
+        //public bool IsMouseOn(int x, int y)
+        //{
+        //    if (x > left && x <= left + DICE_SIZE && y > top && y <= top + DICE_SIZE)
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
 
         public void MoveTo(int x, int y)
         {

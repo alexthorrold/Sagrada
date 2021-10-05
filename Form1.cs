@@ -15,10 +15,7 @@ namespace Sagrada
         GamePieces gamePieces = new GamePieces();
         WindowPattern w;
         RoundTracker r = new RoundTracker(50, 50);
-        Dice current1;
-        Dice current2;
-        Dice current3;
-        Dice current4;
+        Dice[] currentDiceArray = new Dice[4];
         Dice selected;
         //Objective priv1
         //Objective priv2
@@ -45,10 +42,10 @@ namespace Sagrada
         {
             w.Draw(e.Graphics);
             r.Draw(e.Graphics);
-            current1.Draw(e.Graphics);
-            current2.Draw(e.Graphics);
-            current3.Draw(e.Graphics);
-            current4.Draw(e.Graphics);
+            //current1.Draw(e.Graphics);
+            //current2.Draw(e.Graphics);
+            //current3.Draw(e.Graphics);
+            //current4.Draw(e.Graphics);
             //priv1.Draw(e.Graphics);
             //priv2.Draw(e.Graphics);
             //pub1.Draw(e.Graphics);
@@ -60,6 +57,7 @@ namespace Sagrada
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
+            //if ()
         }
     }
 }

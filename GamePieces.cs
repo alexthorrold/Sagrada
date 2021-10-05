@@ -45,7 +45,7 @@ namespace Sagrada
             }
 
             Dice[,] reqArray = new Dice[5, 4];
-            reqArray[3, 3] = new Dice(Color.Red, 5);
+            reqArray[3, 3] = new Dice(Color.Red, BoardPiece.PEN_THICKNESS);
 
             windowList = new List<WindowPattern>
             {
