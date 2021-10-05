@@ -9,6 +9,9 @@ namespace Sagrada
 {
     public class GamePieces
     {
+        private const int ROWS = 5;
+        private const int COLUMNS = 4;
+
         List<Dice> diceList;
         List<WindowPattern> windowList;
 
@@ -41,9 +44,12 @@ namespace Sagrada
                 diceList.Add(new Dice(Color.Yellow, i % 6 + 1));
             }
 
+            Dice[,] reqArray = new Dice[5, 4];
+            reqArray[3, 3] = new Dice(Color.Red, BoardPiece.PEN_THICKNESS);
+
             windowList = new List<WindowPattern>
             {
-
+                new WindowPattern(reqArray)
             };
 
             RandomiseOrder();
@@ -74,9 +80,10 @@ namespace Sagrada
             return d;
         }
 
-        public WindowPattern GetWindow()
+        public WindowPattern GetWindow(int x, int y)
         {
-            WindowPattern w = windowList[windowIndex];
+            WindowPattern w = windowList[windowIndex % 4];
+            w.MoveTo(x, y);
             windowIndex++;
             return w;
         }

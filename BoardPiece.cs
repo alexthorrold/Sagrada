@@ -9,13 +9,26 @@ namespace Sagrada
 {
     public abstract class BoardPiece
     {
-        protected const int DICE_SIZE = 90;
-        protected const int PEN_THICKNESS = 9;
+        public const int DICE_SIZE = 45;
+        public const int PEN_THICKNESS = 5;
+        public const int ROUNDS = 10;
 
         protected int left;
         protected int top;
 
-        public abstract bool IsMouseOn(int x, int y);
+        public int Left
+        {
+            get { return left; }
+            set { left = value; }
+        }
+
+        public int Top
+        {
+            get { return top; }
+            set { top = value; }
+        }
+
+        //public abstract bool IsMouseOn(int x, int y);
 
         public abstract void Draw(Graphics paper);
     }

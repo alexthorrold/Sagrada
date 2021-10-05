@@ -9,7 +9,7 @@ namespace Sagrada
 {
     public class Dice : BoardPiece
     {
-        private const int DOT_SIZE = 22;
+        private const int DOT_SIZE = 11;
         
         private Color color;
         private int number;
@@ -38,10 +38,17 @@ namespace Sagrada
             get { return number; }
         }
 
-        public override bool IsMouseOn(int x, int y)
-        {
-            throw new NotImplementedException();
-        }
+        //public bool IsMouseOn(int x, int y)
+        //{
+        //    if (x > left && x <= left + DICE_SIZE && y > top && y <= top + DICE_SIZE)
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
 
         public void MoveTo(int x, int y)
         {
@@ -61,22 +68,22 @@ namespace Sagrada
 
             if (number == 1 || number == 3 || number == 5)
             {
-                paper.FillEllipse(br, left + (float)33.5, top + (float)33.5, 22, 22);
+                paper.FillEllipse(br, left + (float)16.75, top + (float)16.75, DOT_SIZE, DOT_SIZE);
             }
             if (number > 1)
             {
                 paper.FillEllipse(br, left, top, DOT_SIZE, DOT_SIZE);
-                paper.FillEllipse(br, left + 67, top + 67, DOT_SIZE, DOT_SIZE);
+                paper.FillEllipse(br, left + 33, top + 33, DOT_SIZE, DOT_SIZE);
             }
             if (number > 3)
             {
-                paper.FillEllipse(br, left + 67, top, DOT_SIZE, DOT_SIZE);
-                paper.FillEllipse(br, left, top + 67, DOT_SIZE, DOT_SIZE);
+                paper.FillEllipse(br, left + 33, top, DOT_SIZE, DOT_SIZE);
+                paper.FillEllipse(br, left, top + 33, DOT_SIZE, DOT_SIZE);
             }
             if (number == 6)
             {
-                paper.FillEllipse(br, left, top + (float)33.5, DOT_SIZE, DOT_SIZE);
-                paper.FillEllipse(br, left + 67, top + (float)33.5, DOT_SIZE, DOT_SIZE);
+                paper.FillEllipse(br, left, top + (float)16.75, DOT_SIZE, DOT_SIZE);
+                paper.FillEllipse(br, left + 33, top + (float)16.75, DOT_SIZE, DOT_SIZE);
             }
         }
     }
