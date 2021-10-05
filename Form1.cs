@@ -14,13 +14,19 @@ namespace Sagrada
     {
         GamePieces gamePieces = new GamePieces();
         WindowPattern w;
-        //RoundTracker r;
+        RoundTracker r = new RoundTracker(50, 50);
         Dice current1;
         Dice current2;
         Dice current3;
         Dice current4;
         Dice selected;
-        
+        //Objective priv1
+        //Objective priv2
+        //Objective pub1
+        //Objective pub2
+        //ToolCard tool1
+        //ToolCard tool2
+        //ToolCard tool3
 
         public Form1()
         {
@@ -31,14 +37,25 @@ namespace Sagrada
         {
             this.Invalidate();
 
-            w = gamePieces.GetWindow();
+            w = gamePieces.GetWindow(300, 300);
+            
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             w.Draw(e.Graphics);
-            //r.Draw(e.Graphics);
-
+            r.Draw(e.Graphics);
+            current1.Draw(e.Graphics);
+            current2.Draw(e.Graphics);
+            current3.Draw(e.Graphics);
+            current4.Draw(e.Graphics);
+            //priv1.Draw(e.Graphics);
+            //priv2.Draw(e.Graphics);
+            //pub1.Draw(e.Graphics);
+            //pub2.Draw(e.Graphics);
+            //tool1.Draw(e.Graphics);
+            //tool2.Draw(e.Graphics);
+            //tool3.Draw(e.Graphics);
         }
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)

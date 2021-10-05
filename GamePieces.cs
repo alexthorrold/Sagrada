@@ -45,7 +45,7 @@ namespace Sagrada
             }
 
             Dice[,] reqArray = new Dice[5, 4];
-            reqArray[3, 3] = new Dice(Color.Red, 4);
+            reqArray[3, 3] = new Dice(Color.Red, 5);
 
             windowList = new List<WindowPattern>
             {
@@ -80,9 +80,10 @@ namespace Sagrada
             return d;
         }
 
-        public WindowPattern GetWindow()
+        public WindowPattern GetWindow(int x, int y)
         {
-            WindowPattern w = windowList[windowIndex % 5];
+            WindowPattern w = windowList[windowIndex % 4];
+            w.MoveTo(x, y);
             windowIndex++;
             return w;
         }

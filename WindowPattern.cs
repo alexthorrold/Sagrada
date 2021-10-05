@@ -28,7 +28,7 @@ namespace Sagrada
                 throw new Exception("Provided array is not of correct size");
             }
 
-            diceArray[1, 1] = new Dice(Color.Blue, 2);
+            //diceArray[1, 1] = new Dice(Color.Blue, 2);
 
             //requirementArray = new Dice[ROWS, COLUMNS];
 
@@ -58,7 +58,7 @@ namespace Sagrada
         //    }
         //}
 
-        public override bool IsMouseOn(int x, int y)
+        public bool IsMouseOn(int x, int y)
         {
             if (x > left && x <= left + (DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1)) && y > top && y <= top + (DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
             {
@@ -81,12 +81,41 @@ namespace Sagrada
             }
         }
 
+        public void MoveTo(int x, int y)
+        {
+            left = x;
+            top = y;
+
+            int xPos = x;
+            int yPos;
+
+            for (int a = 0; a < ROWS; a++)
+            {
+                yPos = top;
+
+                for (int b = 0; b < COLUMNS; b++)
+                {
+                    if (DiceArray[a, b] != null)
+                    {
+                        DiceArray[a, b].MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + 50, b * (DICE_SIZE + PEN_THICKNESS) + 50);
+                    }
+                    else if (requirementArray[a, b] != null)
+                    {
+                        requirementArray[a, b].MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + 50, b * (DICE_SIZE + PEN_THICKNESS) + 50);
+                    }
+
+                    yPos += DICE_SIZE + PEN_THICKNESS;
+                }
+                xPos += DICE_SIZE + PEN_THICKNESS;
+            }
+        }
+
         public override void Draw(Graphics paper)
         {
             Pen pen = new Pen(Color.Black, PEN_THICKNESS);
             SolidBrush br = new SolidBrush(Color.Yellow);
 
-            paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * 5 + PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * 4 + PEN_THICKNESS);
+            paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * ROWS + PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * COLUMNS + PEN_THICKNESS);
 
             Dice currentDice;
 
@@ -111,14 +140,14 @@ namespace Sagrada
                     else
                     {
                         currentDice = new Dice(Color.LightGray, 0);
-                        currentDice.MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + 50, b * (DICE_SIZE + PEN_THICKNESS) + 50);
+                        currentDice.MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + left, b * (DICE_SIZE + PEN_THICKNESS) + top);
                     }
 
                     currentDice.Draw(paper);
 
-                    drawY += DICE_SIZE + 9;
+                    drawY += DICE_SIZE + PEN_THICKNESS;
                 }
-                drawX += DICE_SIZE + 9;
+                drawX += DICE_SIZE + PEN_THICKNESS;
             }
         }
     }
