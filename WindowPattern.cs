@@ -36,6 +36,18 @@ namespace Sagrada
             get { return diceArray; }
         }
 
+        public void AddRequirement(int row, int col, Color c, int i)
+        {
+            if (row < ROWS && col < COLUMNS)
+            {
+                requirementArray[row, col] = new Dice(c, i);
+            }
+            else
+            {
+                throw new Exception("Row or column is invalid");
+            }
+        }
+
         public override bool IsMouseOn(int x, int y)
         {
             if (x > left && x <= left + (DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1)) && y > top && y <= top + (DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
