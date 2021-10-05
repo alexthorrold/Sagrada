@@ -58,26 +58,25 @@ namespace Sagrada
         //    }
         //}
 
-        public bool IsMouseOn(int x, int y)
+        public void ClickCheck(int x, int y)
         {
             if (x > left && x <= left + (DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1)) && y > top && y <= top + (DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
             {
-                int column = (x - left) / (DICE_SIZE + 9);
-                int row = (y - top) / (DICE_SIZE + 9);
+                int row = (x - left) / (DICE_SIZE + PEN_THICKNESS);
+                int column = (y - top) / (DICE_SIZE + PEN_THICKNESS);
+
+                DiceArray[row, column] = new Dice(Color.Blue, 3, left + row * (DICE_SIZE + PEN_THICKNESS), top + column * (DICE_SIZE + PEN_THICKNESS));
 
                 Console.WriteLine(column);
                 Console.WriteLine(row);
                 Console.WriteLine(x - left);
                 Console.WriteLine(y - top);
-
-                return true;
             }
             else
             {
                 Console.WriteLine("false");
                 Console.WriteLine(x);
                 Console.WriteLine(y);
-                return false;
             }
         }
 
@@ -139,8 +138,7 @@ namespace Sagrada
                     }
                     else
                     {
-                        currentDice = new Dice(Color.LightGray, 0);
-                        currentDice.MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + left, b * (DICE_SIZE + PEN_THICKNESS) + top);
+                        currentDice = new Dice(Color.LightGray, 0, a * (DICE_SIZE + PEN_THICKNESS) + left, b * (DICE_SIZE + PEN_THICKNESS) + top);
                     }
 
                     currentDice.Draw(paper);
