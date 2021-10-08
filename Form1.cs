@@ -64,6 +64,7 @@ namespace Sagrada
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
             w.ClickCheck(e.X, e.Y);
+            r.ClickCheck(e.X, e.Y);
             this.Invalidate();
         }
     }

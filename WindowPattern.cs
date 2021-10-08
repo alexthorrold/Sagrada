@@ -60,23 +60,12 @@ namespace Sagrada
 
         public void ClickCheck(int x, int y)
         {
-            if (x > left && x <= left + (DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1)) && y > top && y <= top + (DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
+            if (x > left && x <= left + DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1) && y > top && y <= top + (DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
             {
                 int row = (x - left) / (DICE_SIZE + PEN_THICKNESS);
                 int column = (y - top) / (DICE_SIZE + PEN_THICKNESS);
 
                 DiceArray[row, column] = new Dice(Color.Blue, 3, left + row * (DICE_SIZE + PEN_THICKNESS), top + column * (DICE_SIZE + PEN_THICKNESS));
-
-                Console.WriteLine(column);
-                Console.WriteLine(row);
-                Console.WriteLine(x - left);
-                Console.WriteLine(y - top);
-            }
-            else
-            {
-                Console.WriteLine("false");
-                Console.WriteLine(x);
-                Console.WriteLine(y);
             }
         }
 
@@ -112,18 +101,17 @@ namespace Sagrada
         public override void Draw(Graphics paper)
         {
             Pen pen = new Pen(Color.Black, PEN_THICKNESS);
-            SolidBrush br = new SolidBrush(Color.Yellow);
 
             paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * ROWS + PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * COLUMNS + PEN_THICKNESS);
 
             Dice currentDice;
 
-            int drawX = left;
-            int drawY;
+            int x = left;
+            int y;
 
             for (int a = 0; a < ROWS; a++)
             {
-                drawY = top;
+                y = top;
 
                 for (int b = 0; b < COLUMNS; b++)
                 {
@@ -143,9 +131,9 @@ namespace Sagrada
 
                     currentDice.Draw(paper);
 
-                    drawY += DICE_SIZE + PEN_THICKNESS;
+                    y += DICE_SIZE + PEN_THICKNESS;
                 }
-                drawX += DICE_SIZE + PEN_THICKNESS;
+                x += DICE_SIZE + PEN_THICKNESS;
             }
         }
     }
