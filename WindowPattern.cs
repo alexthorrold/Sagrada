@@ -58,15 +58,28 @@ namespace Sagrada
         //    }
         //}
 
-        public void ClickCheck(int x, int y)
+        public void ClickCheck(Dice d, int x, int y)
         {
-            if (x >= left && x <= left + DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1) && y >= top && y <= top + (DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
+            if (d.Color != Color.White && x >= left && x <= left + DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1)
+                && y >= top && y <= top + (DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
             {
                 int row = (x - left) / (DICE_SIZE + PEN_THICKNESS);
                 int column = (y - top) / (DICE_SIZE + PEN_THICKNESS);
 
-                DiceArray[row, column] = new Dice(Color.Blue, 3, left + row * (DICE_SIZE + PEN_THICKNESS), top + column * (DICE_SIZE + PEN_THICKNESS));
+                if (diceArray[row, column] == null && PlacementCheck(d, row, column))
+                {
+                    d.MoveTo(left + row * (DICE_SIZE + PEN_THICKNESS), top + column * (DICE_SIZE + PEN_THICKNESS));
+                    DiceArray[row, column] = d;
+                }   
             }
+        }
+
+        public bool PlacementCheck(Dice d, int row, int column)
+        {
+            if (requirementArray[row - 1, column].PlacementCheck(d) && requirementArray[row + 1, column].PlacementCheck(d)
+                && requirementArray[row, column - 1].PlacementCheck(d) && requirementArray[row, column + 1].PlacementCheck(d))
+                return true;
+            return false;
         }
 
         public void MoveTo(int x, int y)

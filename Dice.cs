@@ -13,7 +13,6 @@ namespace Sagrada
         
         private Color color;
         private int number;
-        private bool selected;
 
         public Dice(Color c, int i)
         {
@@ -37,11 +36,6 @@ namespace Sagrada
         public int Number
         {
             get { return number; }
-        }
-
-        public bool Selected
-        {
-            get { return selected; }
         }
 
         //public bool IsMouseOn(int x, int y)
