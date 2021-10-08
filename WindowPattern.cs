@@ -112,18 +112,17 @@ namespace Sagrada
         public override void Draw(Graphics paper)
         {
             Pen pen = new Pen(Color.Black, PEN_THICKNESS);
-            SolidBrush br = new SolidBrush(Color.Yellow);
 
             paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * ROWS + PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * COLUMNS + PEN_THICKNESS);
 
             Dice currentDice;
 
-            int drawX = left;
-            int drawY;
+            int x = left;
+            int y;
 
             for (int a = 0; a < ROWS; a++)
             {
-                drawY = top;
+                y = top;
 
                 for (int b = 0; b < COLUMNS; b++)
                 {
@@ -143,9 +142,9 @@ namespace Sagrada
 
                     currentDice.Draw(paper);
 
-                    drawY += DICE_SIZE + PEN_THICKNESS;
+                    y += DICE_SIZE + PEN_THICKNESS;
                 }
-                drawX += DICE_SIZE + PEN_THICKNESS;
+                x += DICE_SIZE + PEN_THICKNESS;
             }
         }
     }
