@@ -66,18 +66,7 @@ namespace Sagrada
                 int column = (y - top) / (DICE_SIZE + PEN_THICKNESS);
 
                 DiceArray[row, column] = new Dice(Color.Blue, 3, left + row * (DICE_SIZE + PEN_THICKNESS), top + column * (DICE_SIZE + PEN_THICKNESS));
-
-                //Console.WriteLine(column);
-                //Console.WriteLine(row);
-                //Console.WriteLine(x - left);
-                //Console.WriteLine(y - top);
             }
-            //else
-            //{
-            //    Console.WriteLine("false");
-            //    Console.WriteLine(x);
-            //    Console.WriteLine(y);
-            //}
         }
 
         public void MoveTo(int x, int y)
