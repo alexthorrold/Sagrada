@@ -35,6 +35,12 @@ namespace Sagrada
             this.Invalidate();
 
             w = gamePieces.GetWindow(300, 300);
+
+            //currentDiceArray[0] = gamePieces.GetDice();
+            //currentDiceArray[1] = gamePieces.GetDice();
+            //currentDiceArray[2] = gamePieces.GetDice();
+            //currentDiceArray[3] = gamePieces.GetDice();
+
             
         }
 
