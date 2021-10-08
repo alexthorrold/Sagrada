@@ -12,8 +12,8 @@ namespace Sagrada
         private const int ROWS = 5;
         private const int COLUMNS = 4;
 
-        Dice[,] diceArray;
-        Dice[,] requirementArray;
+        private Dice[,] diceArray;
+        private Dice[,] requirementArray;
 
         public WindowPattern(Dice[,] reqArray)
         {

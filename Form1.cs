@@ -15,7 +15,8 @@ namespace Sagrada
         GamePieces gamePieces = new GamePieces();
         WindowPattern w;
         RoundTracker r = new RoundTracker(50, 50);
-        Dice[] currentDiceArray = new Dice[4];
+        //Dice[] currentDiceArray = new Dice[4];
+        CurrentDice c = new CurrentDice(200, 200);
         Dice selected;
         //Objective priv1
         //Objective priv2
@@ -36,6 +37,8 @@ namespace Sagrada
 
             w = gamePieces.GetWindow(300, 300);
 
+            c.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
+
             //currentDiceArray[0] = gamePieces.GetDice();
             //currentDiceArray[1] = gamePieces.GetDice();
             //currentDiceArray[2] = gamePieces.GetDice();
@@ -48,11 +51,12 @@ namespace Sagrada
         {
             w.Draw(e.Graphics);
             r.Draw(e.Graphics);
+            c.Draw(e.Graphics);
 
-            foreach (Dice d in currentDiceArray)
-            {
-                d.Draw(e.Graphics);
-            }
+            //foreach (Dice d in currentDiceArray)
+            //{
+            //    d.Draw(e.Graphics);
+            //}
 
             //current1.Draw(e.Graphics);
             //current2.Draw(e.Graphics);
@@ -71,8 +75,6 @@ namespace Sagrada
         {
             w.ClickCheck(e.X, e.Y);
             r.ClickCheck(e.X, e.Y);
-
-            foreach (Dice )
 
             this.Invalidate();
         }

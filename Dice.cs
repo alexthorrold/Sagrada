@@ -29,12 +29,6 @@ namespace Sagrada
             MoveTo(x, y);
         }
 
-        public Dice()
-        {
-            color = Color.White;
-            number = 0;
-        }
-
         public Color Color
         {
             get { return color; }

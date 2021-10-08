@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Board.cs" />
     <Compile Include="BoardPiece.cs" />
+    <Compile Include="CurrentDice.cs" />
     <Compile Include="Dice.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

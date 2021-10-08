@@ -12,11 +12,11 @@ namespace Sagrada
         private const int ROWS = 5;
         private const int COLUMNS = 4;
 
-        List<Dice> diceList;
-        List<WindowPattern> windowList;
+        private List<Dice> diceList;
+        private List<WindowPattern> windowList;
 
-        int diceIndex = 0;
-        int windowIndex = 0;
+        private int diceIndex = 0;
+        private int windowIndex = 0;
 
         public GamePieces()
         {
