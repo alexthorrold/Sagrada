@@ -60,39 +60,6 @@ namespace Sagrada
                 if (diceArray[i].Count > 0)
                     diceArray[i][diceIndex[i]].Draw(paper);
             }
-
-            //for ()
-
-            //foreach (List<Dice> ld in diceArray)
-            //{
-            //    ld[diceIndex[]]
-            //}
-
-            //for (int a = 0; a < ROWS; a++)
-            //{
-            //    drawY = top;
-
-            //    for (int b = 0; b < COLUMNS; b++)
-            //    {
-            //        if (DiceArray[a, b] != null)
-            //        {
-            //            currentDice = DiceArray[a, b];
-            //        }
-            //        else if (requirementArray[a, b] != null)
-            //        {
-            //            currentDice = requirementArray[a, b];
-            //            currentDice.MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + left, b * (DICE_SIZE + PEN_THICKNESS) + top);
-            //        }
-            //        else
-            //        {
-            //            currentDice = new Dice(Color.LightGray, 0, a * (DICE_SIZE + PEN_THICKNESS) + left, b * (DICE_SIZE + PEN_THICKNESS) + top);
-            //        }
-
-            //        currentDice.Draw(paper);
-
-            //        drawY += DICE_SIZE + PEN_THICKNESS;
-            //    }
-            //    drawX += DICE_SIZE + PEN_THICKNESS;
         }
     }
 }
