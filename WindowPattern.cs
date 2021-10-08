@@ -60,24 +60,24 @@ namespace Sagrada
 
         public void ClickCheck(int x, int y)
         {
-            if (x > left && x <= left + (DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1)) && y > top && y <= top + (DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
+            if (x > left && x <= left + DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1) && y > top && y <= top + (DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
             {
                 int row = (x - left) / (DICE_SIZE + PEN_THICKNESS);
                 int column = (y - top) / (DICE_SIZE + PEN_THICKNESS);
 
                 DiceArray[row, column] = new Dice(Color.Blue, 3, left + row * (DICE_SIZE + PEN_THICKNESS), top + column * (DICE_SIZE + PEN_THICKNESS));
 
-                Console.WriteLine(column);
-                Console.WriteLine(row);
-                Console.WriteLine(x - left);
-                Console.WriteLine(y - top);
+                //Console.WriteLine(column);
+                //Console.WriteLine(row);
+                //Console.WriteLine(x - left);
+                //Console.WriteLine(y - top);
             }
-            else
-            {
-                Console.WriteLine("false");
-                Console.WriteLine(x);
-                Console.WriteLine(y);
-            }
+            //else
+            //{
+            //    Console.WriteLine("false");
+            //    Console.WriteLine(x);
+            //    Console.WriteLine(y);
+            //}
         }
 
         public void MoveTo(int x, int y)
