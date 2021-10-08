@@ -13,6 +13,7 @@ namespace Sagrada
         
         private Color color;
         private int number;
+        private bool selected;
 
         public Dice(Color c, int i)
         {
@@ -28,6 +29,12 @@ namespace Sagrada
             MoveTo(x, y);
         }
 
+        public Dice()
+        {
+            color = Color.White;
+            number = 0;
+        }
+
         public Color Color
         {
             get { return color; }
@@ -36,6 +43,11 @@ namespace Sagrada
         public int Number
         {
             get { return number; }
+        }
+
+        public bool Selected
+        {
+            get { return selected; }
         }
 
         //public bool IsMouseOn(int x, int y)
@@ -49,6 +61,20 @@ namespace Sagrada
         //        return false;
         //    }
         //}
+
+        //public bool ClickCheck(int x, int y)
+        //{
+        //    if (x >= left && x <= left + DICE_SIZE && y >= top && y <= top + DICE_SIZE)
+        //        return true;
+        //    return false;
+        //}
+
+        public bool PlacementCheck(Dice d)
+        {
+            if (color == d.Color || number == d.Number)
+                return false;
+            return true;
+        }
 
         public void MoveTo(int x, int y)
         {

@@ -60,7 +60,7 @@ namespace Sagrada
 
         public void ClickCheck(int x, int y)
         {
-            if (x > left && x <= left + DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1) && y > top && y <= top + (DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
+            if (x >= left && x <= left + DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1) && y >= top && y <= top + (DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
             {
                 int row = (x - left) / (DICE_SIZE + PEN_THICKNESS);
                 int column = (y - top) / (DICE_SIZE + PEN_THICKNESS);

@@ -48,6 +48,12 @@ namespace Sagrada
         {
             w.Draw(e.Graphics);
             r.Draw(e.Graphics);
+
+            foreach (Dice d in currentDiceArray)
+            {
+                d.Draw(e.Graphics);
+            }
+
             //current1.Draw(e.Graphics);
             //current2.Draw(e.Graphics);
             //current3.Draw(e.Graphics);
@@ -65,6 +71,9 @@ namespace Sagrada
         {
             w.ClickCheck(e.X, e.Y);
             r.ClickCheck(e.X, e.Y);
+
+            foreach (Dice )
+
             this.Invalidate();
         }
     }
