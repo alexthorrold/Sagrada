@@ -38,6 +38,8 @@ namespace Sagrada
             {
                 if (dice == null)
                 {
+                    color = value.Color;
+                    number = value.Number;
                     dice = value;
                 }
                 else
@@ -93,6 +95,11 @@ namespace Sagrada
                     paper.FillEllipse(br, x + 33, y + (float)16.75, Dice.DOT_SIZE, Dice.DOT_SIZE);
                 }
             }
+        }
+
+        public bool PlacementCheck(Dice d)
+        {
+            return !(d.Color == color || d.Number == number);
         }
     }
 }

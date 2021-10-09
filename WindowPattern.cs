@@ -46,9 +46,27 @@ namespace Sagrada
             get { return tileArray; }
         }
 
-        public void AddTile(Dice d, int row, int column)
+        public void AddDice(Dice d, int row, int column)
         {
             tileArray[row, column].Dice = d;
+        }
+
+        public Point GetPoint(int x, int y)
+        {
+            int row = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
+            int column = (y - top) / (Dice.DICE_SIZE + PEN_THICKNESS);
+
+            return new Point(row, column);
+        }
+
+        public int GetRow(int x)
+        {
+            return (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
+        }
+
+        public int GetColumn(int y)
+        {
+            return (y - top) / (Dice.DICE_SIZE + PEN_THICKNESS);
         }
 
         //public void AddRequirement(int row, int col, Color c, int i)
@@ -79,12 +97,31 @@ namespace Sagrada
             //}
         }
 
+        public bool IsMouseOn(int x, int y)
+        {
+            if (x >= left && x <= left + Dice.DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1)
+                && y >= top && y <= top + (Dice.DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
+                return true;
+            return false;
+        }
+
         public bool PlacementCheck(Dice d, int row, int column)
         {
-            //if (DiceArray[row - 1, column].PlacementCheck(d) && DiceArray[row + 1, column].PlacementCheck(d)
-            //    && DiceArray[row, column - 1].PlacementCheck(d) && DiceArray[row, column + 1].PlacementCheck(d))
-            //    return true;
-            return false;
+            //Checks whether there isn't already a dice in 
+            bool valid = TileArray[row, column].Dice == null;
+
+            //Checks number and color of surrounding dice
+            //Doesn't check cases where row or column is outside of array bounds
+            if (row > 0)
+                valid = valid && TileArray[row - 1, column].PlacementCheck(d);
+            if (row < 4)
+                valid = valid && TileArray[row + 1, column].PlacementCheck(d);
+            if (column > 0)
+                valid = valid && TileArray[row, column - 1].PlacementCheck(d);
+            if (column < 3)
+                valid = valid && TileArray[row, column + 1].PlacementCheck(d);
+
+            return valid;
         }
 
         public override void Draw(Graphics paper)

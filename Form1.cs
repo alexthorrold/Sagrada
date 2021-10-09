@@ -17,7 +17,7 @@ namespace Sagrada
         RoundTracker r = new RoundTracker(50, 50);
         //Dice[] currentDiceArray = new Dice[4];
         CurrentDice c = new CurrentDice(200, 200);
-        Dice selected = new Dice(Color.Red, 1);
+        Dice selected = new Dice(Color.Red, 4);
         //Objective priv1
         //Objective priv2
         //Objective pub1
@@ -79,7 +79,18 @@ namespace Sagrada
             //r.ClickCheck(e.X, e.Y);
             //c.ClickCheck(e.X, e.Y);
 
-            w.AddTile(selected, 3, 3);
+            //w.AddTile(selected, 3, 3);
+
+            if (w.IsMouseOn(e.X, e.Y))
+            {
+                int row = w.GetRow(e.X);
+                int column = w.GetColumn(e.Y);
+
+                if (w.PlacementCheck(selected, row, column))
+                    w.AddDice(selected, row, column);
+            }
+
+            selected = new Dice(Color.Blue, 1);
 
             this.Invalidate();
         }
