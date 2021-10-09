@@ -28,8 +28,6 @@ namespace Sagrada
             set { top = value; }
         }
 
-        //public abstract bool IsMouseOn(int x, int y);
-
         public abstract void Draw(Graphics paper);
     }
 }
