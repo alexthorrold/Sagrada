@@ -9,6 +9,8 @@ namespace Sagrada
 {
     class RoundTracker : BoardPiece
     {
+        public const int ROUNDS = 10;
+
         private List<Dice>[] diceArray;
         private int[] diceIndex;
 
@@ -35,6 +37,11 @@ namespace Sagrada
             diceArray[round].Add(d);
         }
 
+        public bool IsMouseOn(int x, int y)
+        {
+            return x >= left && x <= left + Dice.DICE_SIZE * ROUNDS + PEN_THICKNESS * (ROUNDS - 1) && y >= top && y <= top + Dice.DICE_SIZE;
+        }
+
         public void ClickCheck(int x, int y)
         {
             if (x >= left && x <= left + Dice.DICE_SIZE * ROUNDS + PEN_THICKNESS * (ROUNDS - 1) && y >= top && y <= top + Dice.DICE_SIZE)
@@ -53,8 +60,9 @@ namespace Sagrada
 
             for (int i = 0; i < ROUNDS; i++)
             {
-                //if (diceArray[i].Count > 0)
-                    //diceArray[i][diceIndex[i]].Draw(paper);
+                if (diceArray[i].Count > 0)
+                    diceArray[i][diceIndex[i]].Draw(paper, left + (Dice.DICE_SIZE + PEN_THICKNESS) * i, top);
+
             }
         }
     }

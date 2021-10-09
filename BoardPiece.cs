@@ -10,7 +10,6 @@ namespace Sagrada
     public abstract class BoardPiece
     {
         public const int PEN_THICKNESS = 5;
-        public const int ROUNDS = 10;
 
         protected int left;
         protected int top;

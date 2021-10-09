@@ -14,8 +14,7 @@ namespace Sagrada
     {
         GamePieces gamePieces = new GamePieces();
         WindowPattern w;
-        RoundTracker r = new RoundTracker(50, 50);
-        //Dice[] currentDiceArray = new Dice[4];
+        RoundTracker r = new RoundTracker(450, 50);
         CurrentDice c = new CurrentDice(500, 200);
         Dice selected = new Dice(Color.Red, 4);
         //Objective priv1
@@ -50,7 +49,7 @@ namespace Sagrada
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             w.Draw(e.Graphics);
-            //r.Draw(e.Graphics);
+            r.Draw(e.Graphics);
             c.Draw(e.Graphics);
 
             //foreach (Dice d in currentDiceArray)
@@ -73,14 +72,6 @@ namespace Sagrada
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            //if (c.HasSelected())
-            //    w.ClickCheck(c.SendToWindow(), e.X, e.Y);
-
-            //r.ClickCheck(e.X, e.Y);
-            //c.ClickCheck(e.X, e.Y);
-
-            //w.AddTile(selected, 3, 3);
-
             if (w.IsMouseOn(e.X, e.Y))
             {
                 if (selected != null)
@@ -110,6 +101,9 @@ namespace Sagrada
                     selected = c.Selected;
                 else
                     c.ResetSelected();
+            }
+            else if (r.IsMouseOn(e.X, e.Y))
+            {
             }
             else
             {

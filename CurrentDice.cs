@@ -13,7 +13,6 @@ namespace Sagrada
 
         private Dice[] diceArray;
         private int selectedIndex = -1;
-        //private Dice selected;
 
         public CurrentDice(int x, int y)
         {
@@ -35,11 +34,6 @@ namespace Sagrada
             return false;
         }
 
-        public bool HasDice()
-        {
-            return diceArray[selectedIndex].Color != Color.White;
-        }
-
         public void SetSelected(int x, int y)
         {
             selectedIndex = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
@@ -53,7 +47,7 @@ namespace Sagrada
         public void RemoveSelected()
         {
             diceArray[selectedIndex] = new Dice(Color.White, 0);
-            selectedIndex = -1;
+            ResetSelected();
         }
 
         public void SetDice(Dice d1, Dice d2, Dice d3, Dice d4)
@@ -63,23 +57,6 @@ namespace Sagrada
             diceArray[2] = d3;
             diceArray[3] = d4;
         }
-
-        //public void ClickCheck(int x, int y)
-        //{
-        //    if (x >= left && x <= left + Dice.DICE_SIZE * DICE_PER_ROUND + PEN_THICKNESS * (DICE_PER_ROUND - 1) && y >= top && y <= top + Dice.DICE_SIZE)
-        //    {
-        //        selectedIndex = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
-        //    }
-        //}
-
-        //public Dice SendToWindow()
-        //{
-        //    Dice selected = diceArray[selectedIndex];
-
-        //    diceArray[selectedIndex] = new Dice(Color.White, 0, left + (Dice.DICE_SIZE + PEN_THICKNESS) * selectedIndex, top);
-
-        //    return selected;
-        //}
 
         public override void Draw(Graphics paper)
         {
