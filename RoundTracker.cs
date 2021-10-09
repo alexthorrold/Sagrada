@@ -66,8 +66,9 @@ namespace Sagrada
         public void Index(int x, int y)
         {
             int round = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
-
-            diceIndex[round] = (diceIndex[round] + 1) % diceArray[round].Count;
+            
+            if (diceArray[round].Count > 1)
+                diceIndex[round] = (diceIndex[round] + 1) % diceArray[round].Count;
         }
 
         public override void Draw(Graphics paper)
