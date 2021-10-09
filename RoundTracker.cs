@@ -9,8 +9,8 @@ namespace Sagrada
 {
     class RoundTracker : BoardPiece
     {
-        List<Dice>[] diceArray;
-        int[] diceIndex;
+        private List<Dice>[] diceArray;
+        private int[] diceIndex;
 
         public RoundTracker(int x, int y)
         {
@@ -37,7 +37,7 @@ namespace Sagrada
 
         public void ClickCheck(int x, int y)
         {
-            if (x > left && x <= left + DICE_SIZE * ROUNDS + PEN_THICKNESS * (ROUNDS - 1) && y > top && y <= top + DICE_SIZE)
+            if (x >= left && x <= left + DICE_SIZE * ROUNDS + PEN_THICKNESS * (ROUNDS - 1) && y >= top && y <= top + DICE_SIZE)
             {
                 int round = (x - left) / (DICE_SIZE + PEN_THICKNESS);
 
@@ -50,10 +50,6 @@ namespace Sagrada
             Pen pen = new Pen(Color.Black, PEN_THICKNESS);
 
             paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * ROUNDS + PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) + PEN_THICKNESS);
-
-            Dice currentDice;
-
-            int x = left;
 
             for (int i = 0; i < ROUNDS; i++)
             {

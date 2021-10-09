@@ -50,6 +50,20 @@ namespace Sagrada
         //    }
         //}
 
+        //public bool ClickCheck(int x, int y)
+        //{
+        //    if (x >= left && x <= left + DICE_SIZE && y >= top && y <= top + DICE_SIZE)
+        //        return true;
+        //    return false;
+        //}
+
+        public bool PlacementCheck(Dice d)
+        {
+            if (color == d.Color || number == d.Number)
+                return false;
+            return true;
+        }
+
         public void MoveTo(int x, int y)
         {
             left = x;
