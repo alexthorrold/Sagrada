@@ -9,24 +9,40 @@ namespace Sagrada
 {
     public class WindowPattern : BoardPiece
     {
-        private const int ROWS = 5;
-        private const int COLUMNS = 4;
+        public const int ROWS = 5;
+        public const int COLUMNS = 4;
 
         private Dice[,] diceArray;
-        private Dice[,] requirementArray;
+        //private Dice[,] requirementArray;
 
         public WindowPattern(Dice[,] reqArray)
         {
-            diceArray = new Dice[ROWS, COLUMNS];
-
             if (reqArray.GetLength(0) == ROWS && reqArray.GetLength(1) == COLUMNS)
             {
-                requirementArray = reqArray;
+                //requirementArray = reqArray;
+                diceArray = reqArray;
             }
             else
             {
                 throw new Exception("Provided array is not of correct size");
             }
+        }
+
+        public WindowPattern(Dice[,] reqArray, int x, int y)
+        {
+            //diceArray = new Dice[ROWS, COLUMNS];
+
+            if (reqArray.GetLength(0) == ROWS && reqArray.GetLength(1) == COLUMNS)
+            {
+                //requirementArray = reqArray;
+                diceArray = reqArray;
+            }
+            else
+            {
+                throw new Exception("Provided array is not of correct size");
+            }
+
+            MoveTo(x, y);
 
             //diceArray[1, 1] = new Dice(Color.Blue, 2);
 
@@ -44,6 +60,18 @@ namespace Sagrada
         public Dice[,] DiceArray
         {
             get { return diceArray; }
+        }
+
+        public void AddDice(Dice d, int row, int column)
+        {
+            //if (d is RequirementDice)
+            //{
+            //    DiceArray[row, column] = d;
+            //}
+            //else
+            //{
+            //    throw new Exception("Dice can not be placed on top of each other");
+            //}
         }
 
         //public void AddRequirement(int row, int col, Color c, int i)
@@ -76,8 +104,8 @@ namespace Sagrada
 
         public bool PlacementCheck(Dice d, int row, int column)
         {
-            if (requirementArray[row - 1, column].PlacementCheck(d) && requirementArray[row + 1, column].PlacementCheck(d)
-                && requirementArray[row, column - 1].PlacementCheck(d) && requirementArray[row, column + 1].PlacementCheck(d))
+            if (DiceArray[row - 1, column].PlacementCheck(d) && DiceArray[row + 1, column].PlacementCheck(d)
+                && DiceArray[row, column - 1].PlacementCheck(d) && DiceArray[row, column + 1].PlacementCheck(d))
                 return true;
             return false;
         }
@@ -96,14 +124,15 @@ namespace Sagrada
 
                 for (int b = 0; b < COLUMNS; b++)
                 {
-                    if (DiceArray[a, b] != null)
-                    {
-                        DiceArray[a, b].MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + 50, b * (DICE_SIZE + PEN_THICKNESS) + 50);
-                    }
-                    else if (requirementArray[a, b] != null)
-                    {
-                        requirementArray[a, b].MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + 50, b * (DICE_SIZE + PEN_THICKNESS) + 50);
-                    }
+                    DiceArray[a, b].MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + 50, b * (DICE_SIZE + PEN_THICKNESS) + 50);
+                    //if (DiceArray[a, b] != null)
+                    //{
+                    //    DiceArray[a, b].MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + 50, b * (DICE_SIZE + PEN_THICKNESS) + 50);
+                    //}
+                    //else if (requirementArray[a, b] != null)
+                    //{
+                    //    requirementArray[a, b].MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + 50, b * (DICE_SIZE + PEN_THICKNESS) + 50);
+                    //}
 
                     yPos += DICE_SIZE + PEN_THICKNESS;
                 }
@@ -119,34 +148,36 @@ namespace Sagrada
 
             Dice currentDice;
 
-            int x = left;
-            int y;
+            //int x = left;
+            //int y;
 
             for (int a = 0; a < ROWS; a++)
             {
-                y = top;
+                //y = top;
 
                 for (int b = 0; b < COLUMNS; b++)
                 {
-                    if (DiceArray[a, b] != null)
-                    {
-                        currentDice = DiceArray[a, b];
-                    }
-                    else if (requirementArray[a, b] != null)
-                    {
-                        currentDice = requirementArray[a, b];
-                        currentDice.MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + left, b * (DICE_SIZE + PEN_THICKNESS) + top);
-                    }
-                    else
-                    {
-                        currentDice = new Dice(Color.LightGray, 0, a * (DICE_SIZE + PEN_THICKNESS) + left, b * (DICE_SIZE + PEN_THICKNESS) + top);
-                    }
+                    //if (DiceArray[a, b] != null)
+                    //{
+                    //    currentDice = DiceArray[a, b];
+                    //}
+                    //else if (requirementArray[a, b] != null)
+                    //{
+                    //    currentDice = requirementArray[a, b];
+                    //    currentDice.MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + left, b * (DICE_SIZE + PEN_THICKNESS) + top);
+                    //}
+                    //else
+                    //{
+                    //    currentDice = new Dice(Color.LightGray, 0, a * (DICE_SIZE + PEN_THICKNESS) + left, b * (DICE_SIZE + PEN_THICKNESS) + top);
+                    //}
 
-                    currentDice.Draw(paper);
+                    //currentDice.Draw(paper);
 
-                    y += DICE_SIZE + PEN_THICKNESS;
+                    DiceArray[a, b].Draw(paper);
+
+                    //y += DICE_SIZE + PEN_THICKNESS;
                 }
-                x += DICE_SIZE + PEN_THICKNESS;
+                //x += DICE_SIZE + PEN_THICKNESS;
             }
         }
     }

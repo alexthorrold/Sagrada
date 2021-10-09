@@ -35,7 +35,7 @@ namespace Sagrada
         {
             this.Invalidate();
 
-            w = gamePieces.GetWindow(300, 300);
+            //w = gamePieces.GetWindow();
 
             c.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
 
@@ -49,9 +49,9 @@ namespace Sagrada
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            w.Draw(e.Graphics);
-            r.Draw(e.Graphics);
-            c.Draw(e.Graphics);
+            //w.Draw(e.Graphics);
+            //r.Draw(e.Graphics);
+            //c.Draw(e.Graphics);
 
             //foreach (Dice d in currentDiceArray)
             //{

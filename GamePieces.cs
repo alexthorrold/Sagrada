@@ -9,9 +9,6 @@ namespace Sagrada
 {
     public class GamePieces
     {
-        private const int ROWS = 5;
-        private const int COLUMNS = 4;
-
         private List<Dice> diceList;
         private List<WindowPattern> windowList;
 
@@ -44,22 +41,22 @@ namespace Sagrada
                 diceList.Add(new Dice(Color.Yellow, i % 6 + 1));
             }
 
-            Dice[,] reqArray = new Dice[5, 4];
+            //Dice[,] reqArray = new Dice[5, 4];
 
-            for (int a = 0; a < ROWS; a++)
-            {
-                for (int b = 0; b < COLUMNS; b++)
-                {
-                    reqArray[a, b] = new Dice(Color.White, 0);
-                }
-            }
+            //for (int a = 0; a < WindowPattern.ROWS; a++)
+            //{
+            //    for (int b = 0; b < WindowPattern.COLUMNS; b++)
+            //    {
+            //        reqArray[a, b] = new Dice(Color.White, 0);
+            //    }
+            //}
 
-            reqArray[3, 2] = new Dice(Color.Red, BoardPiece.PEN_THICKNESS);
+            //reqArray[3, 2] = new Dice(Color.Red, BoardPiece.PEN_THICKNESS);
 
-            windowList = new List<WindowPattern>
-            {
-                new WindowPattern(reqArray)
-            };
+            //windowList = new List<WindowPattern>
+            //{
+            //    new WindowPattern(reqArray)
+            //};
 
             RandomiseOrder();
         }
@@ -89,12 +86,26 @@ namespace Sagrada
             return d;
         }
 
-        public WindowPattern GetWindow(int x, int y)
+        public Dice[,] GetRequirements()
         {
-            WindowPattern w = windowList[windowIndex % 4];
-            w.MoveTo(x, y);
-            windowIndex++;
-            return w;
+            //WindowPattern w = windowList[windowIndex % 4];
+            //w.MoveTo(x, y);
+            //windowIndex++;
+            //return w;
+
+            Dice[,] reqArray = new Dice[5, 4];
+
+            for (int a = 0; a < WindowPattern.ROWS; a++)
+            {
+                for (int b = 0; b < WindowPattern.COLUMNS; b++)
+                {
+                    reqArray[a, b] = new Dice(Color.White, 0);
+                }
+            }
+
+            reqArray[3, 2] = new Dice(Color.Red, BoardPiece.PEN_THICKNESS);
+
+            return reqArray;
         }
     }
 }

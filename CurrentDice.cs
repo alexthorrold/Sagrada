@@ -47,8 +47,6 @@ namespace Sagrada
             if (x >= left && x <= left + DICE_SIZE * DICE_PER_ROUND + PEN_THICKNESS * (DICE_PER_ROUND - 1) && y >= top && y <= top + DICE_SIZE)
             {
                 selectedIndex = (x - left) / (DICE_SIZE + PEN_THICKNESS);
-
-                Console.WriteLine(diceArray[selectedIndex]);
             }
         }
 
@@ -67,20 +65,10 @@ namespace Sagrada
 
             paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * DICE_PER_ROUND + PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) + PEN_THICKNESS);
 
-            Dice currentDice;
-
-            int x = left;
-
             foreach (Dice d in diceArray)
             {
                 d.Draw(paper);
             }
-
-            //for (int i = 0; i < ROUNDS; i++)
-            //{
-            //    if (diceArray[i].Count > 0)
-            //        diceArray[i][diceIndex[i]].Draw(paper);
-            //}
         }
     }
 }
