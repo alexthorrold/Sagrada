@@ -9,7 +9,6 @@ namespace Sagrada
 {
     public abstract class BoardPiece
     {
-        public const int DICE_SIZE = 45;
         public const int PEN_THICKNESS = 5;
         public const int ROUNDS = 10;
 

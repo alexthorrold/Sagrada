@@ -13,11 +13,11 @@ namespace Sagrada
     public partial class Form1 : Form
     {
         GamePieces gamePieces = new GamePieces();
-        WindowPattern w;
+        WindowPattern w = new WindowPattern(50, 50);
         RoundTracker r = new RoundTracker(50, 50);
         //Dice[] currentDiceArray = new Dice[4];
         CurrentDice c = new CurrentDice(200, 200);
-        Dice selected;
+        Dice selected = new Dice(Color.Red, 1);
         //Objective priv1
         //Objective priv2
         //Objective pub1
@@ -49,7 +49,7 @@ namespace Sagrada
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            //w.Draw(e.Graphics);
+            w.Draw(e.Graphics);
             //r.Draw(e.Graphics);
             //c.Draw(e.Graphics);
 
@@ -73,11 +73,13 @@ namespace Sagrada
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (c.HasSelected())
-                w.ClickCheck(c.SendToWindow(), e.X, e.Y);
+            //if (c.HasSelected())
+            //    w.ClickCheck(c.SendToWindow(), e.X, e.Y);
 
-            r.ClickCheck(e.X, e.Y);
-            c.ClickCheck(e.X, e.Y);
+            //r.ClickCheck(e.X, e.Y);
+            //c.ClickCheck(e.X, e.Y);
+
+            w.AddTile(selected, 3, 3);
 
             this.Invalidate();
         }

@@ -31,15 +31,15 @@ namespace Sagrada
 
         public void AddDice(int round, Dice d)
         {
-            d.MoveTo(left + (DICE_SIZE + PEN_THICKNESS) * (round), top);
+            //d.MoveTo(left + (Dice.DICE_SIZE + PEN_THICKNESS) * (round), top);
             diceArray[round].Add(d);
         }
 
         public void ClickCheck(int x, int y)
         {
-            if (x >= left && x <= left + DICE_SIZE * ROUNDS + PEN_THICKNESS * (ROUNDS - 1) && y >= top && y <= top + DICE_SIZE)
+            if (x >= left && x <= left + Dice.DICE_SIZE * ROUNDS + PEN_THICKNESS * (ROUNDS - 1) && y >= top && y <= top + Dice.DICE_SIZE)
             {
-                int round = (x - left) / (DICE_SIZE + PEN_THICKNESS);
+                int round = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
 
                 diceIndex[round] = (diceIndex[round] + 1) % diceArray[round].Count;
             }
@@ -49,12 +49,12 @@ namespace Sagrada
         {
             Pen pen = new Pen(Color.Black, PEN_THICKNESS);
 
-            paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * ROUNDS + PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) + PEN_THICKNESS);
+            paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (Dice.DICE_SIZE + PEN_THICKNESS) * ROUNDS + PEN_THICKNESS, (Dice.DICE_SIZE + PEN_THICKNESS) + PEN_THICKNESS);
 
             for (int i = 0; i < ROUNDS; i++)
             {
-                if (diceArray[i].Count > 0)
-                    diceArray[i][diceIndex[i]].Draw(paper);
+                //if (diceArray[i].Count > 0)
+                    //diceArray[i][diceIndex[i]].Draw(paper);
             }
         }
     }
