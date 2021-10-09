@@ -90,6 +90,55 @@ namespace Sagrada
             windowList[1][2, 3] = new Tile(3);
             windowList[1][3, 3] = new Tile(1);
 
+            windowList.Add(new Tile[5, 4]);
+
+            for (int a = 0; a < WindowPattern.ROWS; a++)
+            {
+                for (int b = 0; b < WindowPattern.COLUMNS; b++)
+                {
+                    windowList[2][a, b] = new Tile();
+                }
+            }
+
+            windowList[2][2, 0] = new Tile(1);
+            windowList[2][0, 1] = new Tile(1);
+            windowList[2][1, 1] = new Tile(Color.Green);
+            windowList[2][2, 1] = new Tile(3);
+            windowList[2][3, 1] = new Tile(Color.Blue);
+            windowList[2][4, 1] = new Tile(2);
+            windowList[2][0, 2] = new Tile(Color.Blue);
+            windowList[2][1, 2] = new Tile(5);
+            windowList[2][2, 2] = new Tile(4);
+            windowList[2][3, 2] = new Tile(6);
+            windowList[2][4, 2] = new Tile(Color.Green);
+            windowList[2][1, 3] = new Tile(Color.Blue);
+            windowList[2][2, 3] = new Tile(5);
+            windowList[2][3, 3] = new Tile(Color.Green);
+
+            windowList.Add(new Tile[5, 4]);
+
+            for (int a = 0; a < WindowPattern.ROWS; a++)
+            {
+                for (int b = 0; b < WindowPattern.COLUMNS; b++)
+                {
+                    windowList[3][a, b] = new Tile();
+                }
+            }
+
+            windowList[3][0, 0] = new Tile(2);
+            windowList[3][2, 0] = new Tile(5);
+            windowList[3][4, 0] = new Tile(1);
+            windowList[3][0, 1] = new Tile(Color.Yellow);
+            windowList[3][1, 1] = new Tile(6);
+            windowList[3][2, 1] = new Tile(Color.Pink);
+            windowList[3][3, 1] = new Tile(2);
+            windowList[3][4, 1] = new Tile(Color.Red);
+            windowList[3][1, 2] = new Tile(Color.Blue);
+            windowList[3][2, 2] = new Tile(4);
+            windowList[3][3, 2] = new Tile(Color.Green);
+            windowList[3][1, 3] = new Tile(3);
+            windowList[3][3, 3] = new Tile(5);
+
             RandomiseOrder();
         }
 
@@ -131,11 +180,16 @@ namespace Sagrada
             return d;
         }
 
-        public Tile[,] GetRequirements()
+        public Tile[,] GetNextRequirements()
         {
-            Tile[,] t = windowList[0];
             windowIndex++;
-            return t;
+            return windowList[windowIndex % 4];
+        }
+
+        public Tile[,] GetPreviousRequirements()
+        {
+            windowIndex--;
+            return windowList[windowIndex % 4];
         }
     }
 }

@@ -14,6 +14,8 @@ namespace Sagrada
         private List<Dice>[] diceArray;
         private int[] diceIndex;
 
+        private Dice unplayedRoundDice;
+
         public RoundTracker(int x, int y)
         {
             left = x;
@@ -24,16 +26,21 @@ namespace Sagrada
             for (int i = 0; i < ROUNDS; i++)
             {
                 diceArray[i] = new List<Dice>();
-                AddDice(i, new Dice(Color.Red, 5));
-                AddDice(i, new Dice(Color.Blue, 3));
+                //AddDice(i, new Dice(Color.Red, 5));
+                //AddDice(i, new Dice(Color.Blue, 3));
             }
 
             diceIndex = new int[ROUNDS];
+            unplayedRoundDice = new Dice(Color.White, 0);
+        }
+
+        public List<Dice>[] DiceArray
+        {
+            get { return diceArray; }
         }
 
         public void AddDice(int round, Dice d)
         {
-            //d.MoveTo(left + (Dice.DICE_SIZE + PEN_THICKNESS) * (round), top);
             diceArray[round].Add(d);
         }
 
@@ -42,14 +49,11 @@ namespace Sagrada
             return x >= left && x <= left + Dice.DICE_SIZE * ROUNDS + PEN_THICKNESS * (ROUNDS - 1) && y >= top && y <= top + Dice.DICE_SIZE;
         }
 
-        public void ClickCheck(int x, int y)
+        public void Index(int x, int y)
         {
-            if (x >= left && x <= left + Dice.DICE_SIZE * ROUNDS + PEN_THICKNESS * (ROUNDS - 1) && y >= top && y <= top + Dice.DICE_SIZE)
-            {
-                int round = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
+            int round = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
 
-                diceIndex[round] = (diceIndex[round] + 1) % diceArray[round].Count;
-            }
+            diceIndex[round] = (diceIndex[round] + 1) % diceArray[round].Count;
         }
 
         public override void Draw(Graphics paper)
@@ -62,7 +66,8 @@ namespace Sagrada
             {
                 if (diceArray[i].Count > 0)
                     diceArray[i][diceIndex[i]].Draw(paper, left + (Dice.DICE_SIZE + PEN_THICKNESS) * i, top);
-
+                else
+                    unplayedRoundDice.Draw(paper, left + (Dice.DICE_SIZE + PEN_THICKNESS) * i, top);
             }
         }
     }

@@ -17,6 +17,10 @@ namespace Sagrada
         RoundTracker r = new RoundTracker(450, 50);
         CurrentDice c = new CurrentDice(500, 200);
         Dice selected = new Dice(Color.Red, 4);
+
+        bool gameStarted = false;
+        int roundIndex = 0;
+        int currentRoundPlacements = 0;
         //Objective priv1
         //Objective priv2
         //Objective pub1
@@ -34,7 +38,7 @@ namespace Sagrada
         {
             this.Invalidate();
 
-            w = new WindowPattern(gamePieces.GetRequirements(), 50, 50);
+            w = new WindowPattern(gamePieces.GetNextRequirements(), 50, 50);
 
             c.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
 
@@ -72,45 +76,96 @@ namespace Sagrada
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (w.IsMouseOn(e.X, e.Y))
+            if (gameStarted)
             {
-                if (selected != null)
+                if (w.IsMouseOn(e.X, e.Y))
                 {
-                    int row = w.GetRow(e.X);
-                    int column = w.GetColumn(e.Y);
-
-                    if (w.PlacementCheck(selected, row, column))
+                    if (selected != null)
                     {
-                        w.AddDice(selected, row, column);
-                        c.RemoveSelected();
-                        selected = null;
+                        int row = w.GetRow(e.X);
+                        int column = w.GetColumn(e.Y);
+
+                        if (w.PlacementCheck(selected, row, column))
+                        {
+                            w.AddDice(selected, row, column);
+                            c.RemoveSelected();
+                            selected = null;
+                            currentRoundPlacements++;
+                        }
+                        else
+                            MessageBox.Show("Invalid placement.");
                     }
                     else
-                        MessageBox.Show("Invalid placement.");
+                    {
+                        MessageBox.Show("Working");
+                    }
+                }
+                else if (c.IsMouseOn(e.X, e.Y))
+                {
+                    if (currentRoundPlacements < 2)
+                    {
+                        c.SetSelected(e.X, e.Y);
+
+                        if (c.Selected.Color != Color.White)
+                            selected = c.Selected;
+                        else
+                            c.ResetSelected();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Maximum placements for this round reached.");
+                    }
+                }
+                else if (r.IsMouseOn(e.X, e.Y))
+                {
+                    r.Index(e.X, e.Y);
                 }
                 else
                 {
-                    MessageBox.Show("Working");
-                }
-            }
-            else if (c.IsMouseOn(e.X, e.Y))
-            {
-                c.SetSelected(e.X, e.Y);
-
-                if (c.Selected.Color != Color.White)
-                    selected = c.Selected;
-                else
+                    selected = null;
                     c.ResetSelected();
-            }
-            else if (r.IsMouseOn(e.X, e.Y))
-            {
+                }
+
+                this.Invalidate();
             }
             else
             {
-                selected = null;
-                c.ResetSelected();
+                MessageBox.Show("Please select a board and proceed.");
             }
-            
+        }
+
+        private void buttonPrevious_Click(object sender, EventArgs e)
+        {
+            w = new WindowPattern(gamePieces.GetPreviousRequirements(), 50, 50);
+            this.Invalidate();
+        }
+
+        private void buttonNext_Click(object sender, EventArgs e)
+        {
+            w = new WindowPattern(gamePieces.GetNextRequirements(), 50, 50);
+            this.Invalidate();
+        }
+
+        private void buttonProceed_Click(object sender, EventArgs e)
+        {
+            buttonPrevious.Hide();
+            buttonNext.Hide();
+            buttonProceed.Hide();
+            buttonNextRound.Show();
+
+            gameStarted = true;
+        }
+
+        private void buttonNextRound_Click(object sender, EventArgs e)
+        {
+            foreach (Dice d in c.DiceArray)
+                if (d.Color != Color.White)
+                    r.AddDice(roundIndex, d);
+
+            c.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
+            roundIndex++;
+            currentRoundPlacements = 0;
+
             this.Invalidate();
         }
     }

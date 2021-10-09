@@ -22,6 +22,11 @@ namespace Sagrada
             diceArray = new Dice[DICE_PER_ROUND];
         }
 
+        public Dice[] DiceArray
+        {
+            get { return diceArray; }
+        }
+
         public Dice Selected
         {
             get { return diceArray[selectedIndex]; }
