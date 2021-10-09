@@ -99,11 +99,17 @@ namespace Sagrada
 
         public bool RequirementCheck(Dice d)
         {
-            if (color != Color.White)
-                return color == d.Color;
-            else if (number != 0)
-                return number == d.Number;
-            return true;
+            //Returns true if there are no requirements for the tile
+            if (color == Color.White)
+                return true;
+            //The dice's color/number will never match the base case of grey/0 therefore it must meet the requirement
+            return d.Color == color || d.Number == number;
+
+            //if (color != Color.White)
+            //    return color == d.Color;
+            //else if (number != 0)
+            //    return number == d.Number;
+            //return true;
         }
 
         public bool PlacementCheck(Dice d)
