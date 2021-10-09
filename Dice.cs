@@ -132,5 +132,36 @@ namespace Sagrada
                 paper.FillEllipse(br, x + 33, y + (float)16.75, DOT_SIZE, DOT_SIZE);
             }
         }
+
+        public void Draw(Graphics paper, int x, int y, Color c)
+        {
+            Pen pen = new Pen(c, BoardPiece.PEN_THICKNESS);
+            SolidBrush br = new SolidBrush(Color);
+
+            paper.DrawRectangle(pen, x, y, DICE_SIZE, DICE_SIZE);
+            paper.FillRectangle(br, x, y, DICE_SIZE, DICE_SIZE);
+
+            br.Color = Color.Black;
+
+            if (number == 1 || number == 3 || number == 5)
+            {
+                paper.FillEllipse(br, x + (float)16.75, y + (float)16.75, DOT_SIZE, DOT_SIZE);
+            }
+            if (number > 1)
+            {
+                paper.FillEllipse(br, x, y, DOT_SIZE, DOT_SIZE);
+                paper.FillEllipse(br, x + 33, y + 33, DOT_SIZE, DOT_SIZE);
+            }
+            if (number > 3)
+            {
+                paper.FillEllipse(br, x + 33, y, DOT_SIZE, DOT_SIZE);
+                paper.FillEllipse(br, x, y + 33, DOT_SIZE, DOT_SIZE);
+            }
+            if (number == 6)
+            {
+                paper.FillEllipse(br, x, y + (float)16.75, DOT_SIZE, DOT_SIZE);
+                paper.FillEllipse(br, x + 33, y + (float)16.75, DOT_SIZE, DOT_SIZE);
+            }
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace Sagrada
         WindowPattern w;
         RoundTracker r = new RoundTracker(50, 50);
         //Dice[] currentDiceArray = new Dice[4];
-        CurrentDice c = new CurrentDice(200, 200);
+        CurrentDice c = new CurrentDice(500, 200);
         Dice selected = new Dice(Color.Red, 4);
         //Objective priv1
         //Objective priv2
@@ -51,7 +51,7 @@ namespace Sagrada
         {
             w.Draw(e.Graphics);
             //r.Draw(e.Graphics);
-            //c.Draw(e.Graphics);
+            c.Draw(e.Graphics);
 
             //foreach (Dice d in currentDiceArray)
             //{
@@ -83,17 +83,40 @@ namespace Sagrada
 
             if (w.IsMouseOn(e.X, e.Y))
             {
-                int row = w.GetRow(e.X);
-                int column = w.GetColumn(e.Y);
+                if (selected != null)
+                {
+                    int row = w.GetRow(e.X);
+                    int column = w.GetColumn(e.Y);
 
-                if (w.PlacementCheck(selected, row, column))
-                    w.AddDice(selected, row, column);
+                    if (w.PlacementCheck(selected, row, column))
+                    {
+                        w.AddDice(selected, row, column);
+                        c.RemoveSelected();
+                        selected = null;
+                    }
+                    else
+                        MessageBox.Show("Invalid placement.");
+                }
                 else
-                    MessageBox.Show("Invalid placement.");
+                {
+                    MessageBox.Show("Working");
+                }
             }
+            else if (c.IsMouseOn(e.X, e.Y))
+            {
+                c.SetSelected(e.X, e.Y);
 
-            selected = new Dice(Color.Blue, 1);
-
+                if (c.Selected.Color != Color.White)
+                    selected = c.Selected;
+                else
+                    c.ResetSelected();
+            }
+            else
+            {
+                selected = null;
+                c.ResetSelected();
+            }
+            
             this.Invalidate();
         }
     }

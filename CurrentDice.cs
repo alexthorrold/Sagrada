@@ -13,6 +13,7 @@ namespace Sagrada
 
         private Dice[] diceArray;
         private int selectedIndex = -1;
+        //private Dice selected;
 
         public CurrentDice(int x, int y)
         {
@@ -22,42 +23,63 @@ namespace Sagrada
             diceArray = new Dice[DICE_PER_ROUND];
         }
 
-        public bool HasSelected()
+        public Dice Selected
         {
-            if (selectedIndex != -1)
+            get { return diceArray[selectedIndex]; }
+        }
+
+        public bool IsMouseOn(int x, int y)
+        {
+            if (x >= left && x <= left + Dice.DICE_SIZE * DICE_PER_ROUND + PEN_THICKNESS * (DICE_PER_ROUND - 1) && y >= top && y <= top + Dice.DICE_SIZE)
                 return true;
             return false;
         }
 
+        public bool HasDice()
+        {
+            return diceArray[selectedIndex].Color != Color.White;
+        }
+
+        public void SetSelected(int x, int y)
+        {
+            selectedIndex = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
+        }
+
+        public void ResetSelected()
+        {
+            selectedIndex = -1;
+        }
+
+        public void RemoveSelected()
+        {
+            diceArray[selectedIndex] = new Dice(Color.White, 0);
+            selectedIndex = -1;
+        }
+
         public void SetDice(Dice d1, Dice d2, Dice d3, Dice d4)
         {
-            //d1.MoveTo(left, top);
-            //d2.MoveTo(left + Dice.DICE_SIZE + PEN_THICKNESS, top);
-            //d3.MoveTo(left + (Dice.DICE_SIZE + PEN_THICKNESS) * 2, top);
-            //d4.MoveTo(left + (Dice.DICE_SIZE + PEN_THICKNESS) * 3, top);
-
             diceArray[0] = d1;
             diceArray[1] = d2;
             diceArray[2] = d3;
             diceArray[3] = d4;
         }
 
-        public void ClickCheck(int x, int y)
-        {
-            if (x >= left && x <= left + Dice.DICE_SIZE * DICE_PER_ROUND + PEN_THICKNESS * (DICE_PER_ROUND - 1) && y >= top && y <= top + Dice.DICE_SIZE)
-            {
-                selectedIndex = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
-            }
-        }
+        //public void ClickCheck(int x, int y)
+        //{
+        //    if (x >= left && x <= left + Dice.DICE_SIZE * DICE_PER_ROUND + PEN_THICKNESS * (DICE_PER_ROUND - 1) && y >= top && y <= top + Dice.DICE_SIZE)
+        //    {
+        //        selectedIndex = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
+        //    }
+        //}
 
-        public Dice SendToWindow()
-        {
-            Dice selected = diceArray[selectedIndex];
+        //public Dice SendToWindow()
+        //{
+        //    Dice selected = diceArray[selectedIndex];
 
-            diceArray[selectedIndex] = new Dice(Color.White, 0, left + (Dice.DICE_SIZE + PEN_THICKNESS) * selectedIndex, top);
+        //    diceArray[selectedIndex] = new Dice(Color.White, 0, left + (Dice.DICE_SIZE + PEN_THICKNESS) * selectedIndex, top);
 
-            return selected;
-        }
+        //    return selected;
+        //}
 
         public override void Draw(Graphics paper)
         {
@@ -65,10 +87,11 @@ namespace Sagrada
 
             paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (Dice.DICE_SIZE + PEN_THICKNESS) * DICE_PER_ROUND + PEN_THICKNESS, (Dice.DICE_SIZE + PEN_THICKNESS) + PEN_THICKNESS);
 
-            foreach (Dice d in diceArray)
-            {
-                //d.Draw(paper);
-            }
+            for (int i = 0; i < DICE_PER_ROUND; i++)
+                diceArray[i].Draw(paper, left + (Dice.DICE_SIZE + PEN_THICKNESS) * i, top);
+
+            if (selectedIndex != -1)
+                diceArray[selectedIndex].Draw(paper, left + (Dice.DICE_SIZE + PEN_THICKNESS) * selectedIndex, top, Color.Gray);
         }
     }
 }
