@@ -22,20 +22,12 @@ namespace Sagrada
             tileArray[3, 3] = new Tile(4);
         }
 
-        public WindowPattern(int x, int y)
+        public WindowPattern(Tile[,] reqArray, int x, int y)
         {
-            tileArray = new Tile[ROWS, COLUMNS];
-
-            for (int a = 0; a < ROWS; a++)
-            {
-                for (int b = 0; b < COLUMNS; b++)
-                {
-                    tileArray[a, b] = new Tile();
-                }
-            }
-
-            tileArray[2, 2] = new Tile(Color.Red);
-            tileArray[3, 3] = new Tile(4);
+            if (reqArray.GetLength(0) == 5 && reqArray.GetLength(1) == 4)
+                tileArray = reqArray;
+            else
+                throw new Exception("Array of invalid size received.");
 
             left = x;
             top = y;
@@ -51,14 +43,6 @@ namespace Sagrada
             tileArray[row, column].Dice = d;
         }
 
-        public Point GetPoint(int x, int y)
-        {
-            int row = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
-            int column = (y - top) / (Dice.DICE_SIZE + PEN_THICKNESS);
-
-            return new Point(row, column);
-        }
-
         public int GetRow(int x)
         {
             return (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
@@ -67,34 +51,6 @@ namespace Sagrada
         public int GetColumn(int y)
         {
             return (y - top) / (Dice.DICE_SIZE + PEN_THICKNESS);
-        }
-
-        //public void AddRequirement(int row, int col, Color c, int i)
-        //{
-        //    if (row < ROWS && col < COLUMNS)
-        //    {
-        //        requirementArray[row, col] = new Dice(c, i);
-        //    }
-        //    else
-        //    {
-        //        throw new Exception("Row or column is invalid");
-        //    }
-        //}
-
-        public void ClickCheck(Dice d, int x, int y)
-        {
-            //if (d.Color != Color.White && x >= left && x <= left + Dice.DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1)
-            //    && y >= top && y <= top + (Dice.DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
-            //{
-            //    int row = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
-            //    int column = (y - top) / (Dice.DICE_SIZE + PEN_THICKNESS);
-
-            //    if (diceArray[row, column] == null && PlacementCheck(d, row, column))
-            //    {
-            //        //d.MoveTo(left + row * (Dice.DICE_SIZE + PEN_THICKNESS), top + column * (Dice.DICE_SIZE + PEN_THICKNESS));
-            //        DiceArray[row, column] = d;
-            //    }   
-            //}
         }
 
         public bool IsMouseOn(int x, int y)
@@ -108,7 +64,7 @@ namespace Sagrada
         public bool PlacementCheck(Dice d, int row, int column)
         {
             //Checks whether there isn't already a dice in 
-            bool valid = TileArray[row, column].Dice == null;
+            bool valid = TileArray[row, column].Dice == null && TileArray[row, column].RequirementCheck(d);
 
             //Checks number and color of surrounding dice
             //Doesn't check cases where row or column is outside of array bounds

@@ -13,7 +13,7 @@ namespace Sagrada
     public partial class Form1 : Form
     {
         GamePieces gamePieces = new GamePieces();
-        WindowPattern w = new WindowPattern(50, 50);
+        WindowPattern w;
         RoundTracker r = new RoundTracker(50, 50);
         //Dice[] currentDiceArray = new Dice[4];
         CurrentDice c = new CurrentDice(200, 200);
@@ -35,7 +35,7 @@ namespace Sagrada
         {
             this.Invalidate();
 
-            //w = gamePieces.GetWindow();
+            w = new WindowPattern(gamePieces.GetRequirements(), 50, 50);
 
             c.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
 
@@ -88,6 +88,8 @@ namespace Sagrada
 
                 if (w.PlacementCheck(selected, row, column))
                     w.AddDice(selected, row, column);
+                else
+                    MessageBox.Show("Invalid placement.");
             }
 
             selected = new Dice(Color.Blue, 1);

@@ -97,8 +97,19 @@ namespace Sagrada
             }
         }
 
+        public bool RequirementCheck(Dice d)
+        {
+            if (color != Color.White)
+                return color == d.Color;
+            else if (number != 0)
+                return number == d.Number;
+            return true;
+        }
+
         public bool PlacementCheck(Dice d)
         {
+            if (dice != null)
+                return !(d.Color == dice.Color || d.Number == dice.Number);
             return !(d.Color == color || d.Number == number);
         }
     }

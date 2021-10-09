@@ -10,7 +10,7 @@ namespace Sagrada
     public class GamePieces
     {
         private List<Dice> diceList;
-        private List<WindowPattern> windowList;
+        private List<Tile[,]> windowList;
 
         private int diceIndex = 0;
         private int windowIndex = 0;
@@ -41,29 +41,61 @@ namespace Sagrada
                 diceList.Add(new Dice(Color.Yellow, i % 6 + 1));
             }
 
-            //Dice[,] reqArray = new Dice[5, 4];
+            windowList = new List<Tile[,]>();
 
-            //for (int a = 0; a < WindowPattern.ROWS; a++)
-            //{
-            //    for (int b = 0; b < WindowPattern.COLUMNS; b++)
-            //    {
-            //        reqArray[a, b] = new Dice(Color.White, 0);
-            //    }
-            //}
+            windowList.Add(new Tile[5, 4]);
 
-            //reqArray[3, 2] = new Dice(Color.Red, BoardPiece.PEN_THICKNESS);
+            for (int a = 0; a < WindowPattern.ROWS; a++)
+            {
+                for (int b = 0; b < windowList[0].GetLength(1); b++)
+                {
+                    windowList[0][a, b] = new Tile();
+                }
+            }
 
-            //windowList = new List<WindowPattern>
-            //{
-            //    new WindowPattern(reqArray)
-            //};
+            windowList[0][2, 0] = new Tile(Color.Green);
+            windowList[0][0, 1] = new Tile(2);
+            windowList[0][1, 1] = new Tile(Color.Yellow);
+            windowList[0][2, 1] = new Tile(5);
+            windowList[0][3, 1] = new Tile(Color.Blue);
+            windowList[0][4, 1] = new Tile(1);
+            windowList[0][1, 2] = new Tile(Color.Red);
+            windowList[0][2, 2] = new Tile(3);
+            windowList[0][3, 2] = new Tile(Color.Purple);
+            windowList[0][0, 3] = new Tile(1);
+            windowList[0][2, 3] = new Tile(6);
+            windowList[0][4, 3] = new Tile(4);
+
+            windowList.Add(new Tile[5, 4]);
+
+            for (int a = 0; a < WindowPattern.ROWS; a++)
+            {
+                for (int b = 0; b < WindowPattern.COLUMNS; b++)
+                {
+                    windowList[1][a, b] = new Tile();
+                }
+            }
+
+            windowList[1][1, 0] = new Tile(Color.Blue);
+            windowList[1][2, 0] = new Tile(Color.Red);
+            windowList[1][1, 1] = new Tile(4);
+            windowList[1][2, 1] = new Tile(5);
+            windowList[1][4, 1] = new Tile(Color.Blue);
+            windowList[1][0, 2] = new Tile(Color.Blue);
+            windowList[1][1, 2] = new Tile(2);
+            windowList[1][3, 2] = new Tile(Color.Red);
+            windowList[1][4, 2] = new Tile(5);
+            windowList[1][0, 3] = new Tile(6);
+            windowList[1][1, 3] = new Tile(Color.Red);
+            windowList[1][2, 3] = new Tile(3);
+            windowList[1][3, 3] = new Tile(1);
 
             RandomiseOrder();
         }
 
         public void RandomiseOrder()
         {
-            List<Dice> randomList = new List<Dice>();
+            List<Dice> randomDice = new List<Dice>();
             int n = 90;
             int r;
             Random rand = new Random();
@@ -71,12 +103,25 @@ namespace Sagrada
             while (n > 0)
             {
                 r = rand.Next(n);
-                randomList.Add(diceList[r]);
+                randomDice.Add(diceList[r]);
                 diceList.RemoveAt(r);
                 n--;
             }
 
-            diceList = randomList;
+            diceList = randomDice;
+
+            List<Tile[,]> randomWindows = new List<Tile[,]>();
+            n = windowList.Count;
+
+            while (n > 0)
+            {
+                r = rand.Next(n);
+                randomWindows.Add(windowList[r]);
+                windowList.RemoveAt(r);
+                n--;
+            }
+
+            windowList = randomWindows;
         }
 
         public Dice GetDice()
@@ -86,26 +131,11 @@ namespace Sagrada
             return d;
         }
 
-        public Dice[,] GetRequirements()
+        public Tile[,] GetRequirements()
         {
-            //WindowPattern w = windowList[windowIndex % 4];
-            //w.MoveTo(x, y);
-            //windowIndex++;
-            //return w;
-
-            Dice[,] reqArray = new Dice[5, 4];
-
-            for (int a = 0; a < WindowPattern.ROWS; a++)
-            {
-                for (int b = 0; b < WindowPattern.COLUMNS; b++)
-                {
-                    reqArray[a, b] = new Dice(Color.White, 0);
-                }
-            }
-
-            reqArray[3, 2] = new Dice(Color.Red, BoardPiece.PEN_THICKNESS);
-
-            return reqArray;
+            Tile[,] t = windowList[0];
+            windowIndex++;
+            return t;
         }
     }
 }
