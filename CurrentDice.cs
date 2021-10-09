@@ -55,6 +55,14 @@ namespace Sagrada
             ResetSelected();
         }
 
+        public void Clear()
+        {
+            for (int i = 0; i < DICE_PER_ROUND; i++)
+            {
+                diceArray[i] = new Dice(Color.White, 0);
+            }
+        }
+
         public void SetDice(Dice d1, Dice d2, Dice d3, Dice d4)
         {
             diceArray[0] = d1;

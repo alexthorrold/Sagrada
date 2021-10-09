@@ -39,6 +39,20 @@ namespace Sagrada
             get { return diceArray; }
         }
 
+        public int Total
+        {
+            get
+            {
+                int total = 0;
+
+                foreach (List<Dice> ld in diceArray)
+                    foreach (Dice d in ld)
+                        total += d.Number;
+
+                return total;
+            }
+        }
+
         public void AddDice(int round, Dice d)
         {
             diceArray[round].Add(d);

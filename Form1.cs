@@ -20,7 +20,7 @@ namespace Sagrada
 
         bool gameStarted = false;
         int roundIndex = 0;
-        int currentRoundPlacements = 0;
+        int currentRoundTurn = 0;
         //Objective priv1
         //Objective priv2
         //Objective pub1
@@ -41,13 +41,6 @@ namespace Sagrada
             w = new WindowPattern(gamePieces.GetNextRequirements(), 50, 50);
 
             c.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
-
-            //currentDiceArray[0] = gamePieces.GetDice();
-            //currentDiceArray[1] = gamePieces.GetDice();
-            //currentDiceArray[2] = gamePieces.GetDice();
-            //currentDiceArray[3] = gamePieces.GetDice();
-
-            
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -56,15 +49,6 @@ namespace Sagrada
             r.Draw(e.Graphics);
             c.Draw(e.Graphics);
 
-            //foreach (Dice d in currentDiceArray)
-            //{
-            //    d.Draw(e.Graphics);
-            //}
-
-            //current1.Draw(e.Graphics);
-            //current2.Draw(e.Graphics);
-            //current3.Draw(e.Graphics);
-            //current4.Draw(e.Graphics);
             //priv1.Draw(e.Graphics);
             //priv2.Draw(e.Graphics);
             //pub1.Draw(e.Graphics);
@@ -90,7 +74,7 @@ namespace Sagrada
                             w.AddDice(selected, row, column);
                             c.RemoveSelected();
                             selected = null;
-                            currentRoundPlacements++;
+                            currentRoundTurn++;
                         }
                         else
                             MessageBox.Show("Invalid placement.");
@@ -102,7 +86,7 @@ namespace Sagrada
                 }
                 else if (c.IsMouseOn(e.X, e.Y))
                 {
-                    if (currentRoundPlacements < 2)
+                    if (currentRoundTurn < 2)
                     {
                         c.SetSelected(e.X, e.Y);
 
@@ -162,11 +146,19 @@ namespace Sagrada
                 if (d.Color != Color.White)
                     r.AddDice(roundIndex, d);
 
-            c.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
             roundIndex++;
-            currentRoundPlacements = 0;
+            currentRoundTurn = 0;
 
             this.Invalidate();
+
+            if (roundIndex == 10)
+            {
+                buttonNextRound.Hide();
+                c.Clear();
+                MessageBox.Show(r.Total.ToString());
+            }
+            else
+                c.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
         }
     }
 }
