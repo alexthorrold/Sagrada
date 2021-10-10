@@ -65,6 +65,22 @@ namespace Sagrada
             return true;
         }
 
+        public void Flip()
+        {
+            if (number == 1)
+                number = 6;
+            else if (number == 2)
+                number = 5;
+            else if (number == 3)
+                number = 4;
+            else if (number == 4)
+                number = 3;
+            else if (number == 5)
+                number = 2;
+            else
+                number = 1;
+        }
+
         //public void MoveTo(int x, int y)
         //{
         //    left = x;

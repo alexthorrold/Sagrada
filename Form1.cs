@@ -20,7 +20,8 @@ namespace Sagrada
 
         bool gameStarted = false;
         int roundIndex = 0;
-        int currentRoundTurn = 0;
+        int currentRoundTurn = 1;
+        int toolUsedTurn = 0;
         //Objective priv1
         //Objective priv2
         //Objective pub1
