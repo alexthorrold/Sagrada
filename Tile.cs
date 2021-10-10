@@ -97,6 +97,11 @@ namespace Sagrada
             }
         }
 
+        /// <summary>
+        /// Checks whether a dice meets the requirements to be placed on this tile
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
         public bool RequirementCheck(Dice d)
         {
             //Returns true if there are no requirements for the tile
@@ -104,14 +109,13 @@ namespace Sagrada
                 return true;
             //The dice's color/number will never match the base case of grey/0 therefore it must meet the requirement
             return d.Color == color || d.Number == number;
-
-            //if (color != Color.White)
-            //    return color == d.Color;
-            //else if (number != 0)
-            //    return number == d.Number;
-            //return true;
         }
 
+        /// <summary>
+        /// Checks 
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
         public bool PlacementCheck(Dice d)
         {
             if (dice != null)

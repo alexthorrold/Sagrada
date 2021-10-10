@@ -25,8 +25,6 @@ namespace Sagrada
         {
             color = c;
             number = i;
-
-            //MoveTo(x, y);
         }
 
         public Color Color
@@ -38,25 +36,6 @@ namespace Sagrada
         {
             get { return number; }
         }
-
-        //public bool IsMouseOn(int x, int y)
-        //{
-        //    if (x > left && x <= left + DICE_SIZE && y > top && y <= top + DICE_SIZE)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        //public bool ClickCheck(int x, int y)
-        //{
-        //    if (x >= left && x <= left + DICE_SIZE && y >= top && y <= top + DICE_SIZE)
-        //        return true;
-        //    return false;
-        //}
 
         public bool PlacementCheck(Dice d)
         {
@@ -81,43 +60,6 @@ namespace Sagrada
                 number = 1;
         }
 
-        //public void MoveTo(int x, int y)
-        //{
-        //    left = x;
-        //    top = y;
-        //}
-
-        //public override void Draw(Graphics paper)
-        //{
-        //    Pen pen = new Pen(Color.Black, PEN_THICKNESS);
-        //    SolidBrush br = new SolidBrush(Color);
-
-        //    paper.DrawRectangle(pen, left, top, DICE_SIZE, DICE_SIZE);
-        //    paper.FillRectangle(br, left, top, DICE_SIZE, DICE_SIZE);
-
-        //    br.Color = Color.Black;
-
-        //    if (number == 1 || number == 3 || number == 5)
-        //    {
-        //        paper.FillEllipse(br, left + (float)16.75, top + (float)16.75, DOT_SIZE, DOT_SIZE);
-        //    }
-        //    if (number > 1)
-        //    {
-        //        paper.FillEllipse(br, left, top, DOT_SIZE, DOT_SIZE);
-        //        paper.FillEllipse(br, left + 33, top + 33, DOT_SIZE, DOT_SIZE);
-        //    }
-        //    if (number > 3)
-        //    {
-        //        paper.FillEllipse(br, left + 33, top, DOT_SIZE, DOT_SIZE);
-        //        paper.FillEllipse(br, left, top + 33, DOT_SIZE, DOT_SIZE);
-        //    }
-        //    if (number == 6)
-        //    {
-        //        paper.FillEllipse(br, left, top + (float)16.75, DOT_SIZE, DOT_SIZE);
-        //        paper.FillEllipse(br, left + 33, top + (float)16.75, DOT_SIZE, DOT_SIZE);
-        //    }
-        //}
-
         public void Draw(Graphics paper, int x, int y)
         {
             Pen pen = new Pen(Color.Black, BoardPiece.PEN_THICKNESS);
@@ -126,27 +68,7 @@ namespace Sagrada
             paper.DrawRectangle(pen, x, y, DICE_SIZE, DICE_SIZE);
             paper.FillRectangle(br, x, y, DICE_SIZE, DICE_SIZE);
 
-            br.Color = Color.Black;
-
-            if (number == 1 || number == 3 || number == 5)
-            {
-                paper.FillEllipse(br, x + (float)16.75, y + (float)16.75, DOT_SIZE, DOT_SIZE);
-            }
-            if (number > 1)
-            {
-                paper.FillEllipse(br, x, y, DOT_SIZE, DOT_SIZE);
-                paper.FillEllipse(br, x + 33, y + 33, DOT_SIZE, DOT_SIZE);
-            }
-            if (number > 3)
-            {
-                paper.FillEllipse(br, x + 33, y, DOT_SIZE, DOT_SIZE);
-                paper.FillEllipse(br, x, y + 33, DOT_SIZE, DOT_SIZE);
-            }
-            if (number == 6)
-            {
-                paper.FillEllipse(br, x, y + (float)16.75, DOT_SIZE, DOT_SIZE);
-                paper.FillEllipse(br, x + 33, y + (float)16.75, DOT_SIZE, DOT_SIZE);
-            }
+            DrawDots(paper, x, y);
         }
 
         public void Draw(Graphics paper, int x, int y, Color c)
@@ -157,7 +79,12 @@ namespace Sagrada
             paper.DrawRectangle(pen, x, y, DICE_SIZE, DICE_SIZE);
             paper.FillRectangle(br, x, y, DICE_SIZE, DICE_SIZE);
 
-            br.Color = Color.Black;
+            DrawDots(paper, x, y);
+        }
+
+        private void DrawDots(Graphics paper, int x, int y)
+        {
+            SolidBrush br = new SolidBrush(Color.Black);
 
             if (number == 1 || number == 3 || number == 5)
             {

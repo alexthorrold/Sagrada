@@ -47,8 +47,12 @@ namespace Sagrada
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             w.Draw(e.Graphics);
-            r.Draw(e.Graphics);
-            c.Draw(e.Graphics);
+
+            if (gameStarted)
+            {
+                r.Draw(e.Graphics);
+                c.Draw(e.Graphics);
+            }
 
             //priv1.Draw(e.Graphics);
             //priv2.Draw(e.Graphics);
@@ -78,16 +82,14 @@ namespace Sagrada
                             currentRoundTurn++;
                         }
                         else
+                        {
                             MessageBox.Show("Invalid placement.");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Working");
+                        }
                     }
                 }
                 else if (c.IsMouseOn(e.X, e.Y))
                 {
-                    if (currentRoundTurn < 2)
+                    if (currentRoundTurn < 3)
                     {
                         c.SetSelected(e.X, e.Y);
 
@@ -139,6 +141,7 @@ namespace Sagrada
             buttonNextRound.Show();
 
             gameStarted = true;
+            this.Invalidate();
         }
 
         private void buttonNextRound_Click(object sender, EventArgs e)

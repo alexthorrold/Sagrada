@@ -87,12 +87,8 @@ namespace Sagrada
             paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (Dice.DICE_SIZE + PEN_THICKNESS) * ROWS + PEN_THICKNESS, (Dice.DICE_SIZE + PEN_THICKNESS) * COLUMNS + PEN_THICKNESS);
 
             for (int a = 0; a < ROWS; a++)
-            {
                 for (int b = 0; b < COLUMNS; b++)
-                {
                     tileArray[a, b].Draw(paper, left + (Dice.DICE_SIZE + BoardPiece.PEN_THICKNESS) * a, top + (Dice.DICE_SIZE + BoardPiece.PEN_THICKNESS) * b);
-                }
-            }
         }
     }
 }

@@ -24,11 +24,7 @@ namespace Sagrada
             diceArray = new List<Dice>[ROUNDS];
 
             for (int i = 0; i < ROUNDS; i++)
-            {
                 diceArray[i] = new List<Dice>();
-                //AddDice(i, new Dice(Color.Red, 5));
-                //AddDice(i, new Dice(Color.Blue, 3));
-            }
 
             diceIndex = new int[ROUNDS];
             unplayedRoundDice = new Dice(Color.White, 0);
