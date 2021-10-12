@@ -14,6 +14,8 @@ namespace Sagrada
 
         private Tile[,] tileArray;
 
+        bool isFirstDice = true;
+
         public WindowPattern(Dice[,] reqArray)
         {
             tileArray = new Tile[ROWS, COLUMNS];
@@ -36,6 +38,12 @@ namespace Sagrada
         public Tile[,] TileArray
         {
             get { return tileArray; }
+        }
+
+        public bool IsFirstDice
+        {
+            get { return isFirstDice; }
+            set { isFirstDice = value; }
         }
 
         public void AddDice(Dice d, int row, int column)
@@ -65,19 +73,50 @@ namespace Sagrada
         {
             //Checks whether there isn't already a dice in 
             bool valid = TileArray[row, column].Dice == null && TileArray[row, column].RequirementCheck(d);
+            bool hasTouchingDie = false;
 
-            //Checks number and color of surrounding dice
+            if (isFirstDice)
+            {
+                valid = valid && (row == 0 || row == ROWS - 1 || column == 0 || column == COLUMNS - 1);
+                
+                //The first die doesn't require an adjacent die
+                hasTouchingDie = true;
+            }
+
+            //Checks number, color of surrounding dice and whether the die is placed next to at least one other die
             //Doesn't check cases where row or column is outside of array bounds
             if (row > 0)
+            {
                 valid = valid && TileArray[row - 1, column].PlacementCheck(d);
-            if (row < 4)
-                valid = valid && TileArray[row + 1, column].PlacementCheck(d);
-            if (column > 0)
-                valid = valid && TileArray[row, column - 1].PlacementCheck(d);
-            if (column < 3)
-                valid = valid && TileArray[row, column + 1].PlacementCheck(d);
+                hasTouchingDie = hasTouchingDie || TileArray[row - 1, column].Dice != null;
 
-            return valid;
+                if (column > 0)
+                    hasTouchingDie = hasTouchingDie || TileArray[row - 1, column - 1].Dice != null;
+                if (column < 3)
+                    hasTouchingDie = hasTouchingDie || TileArray[row - 1, column + 1].Dice != null;
+            }
+            if (row < 4)
+            {
+                valid = valid && TileArray[row + 1, column].PlacementCheck(d);
+                hasTouchingDie = hasTouchingDie || TileArray[row + 1, column].Dice != null;
+
+                if (column > 0)
+                    hasTouchingDie = hasTouchingDie || TileArray[row + 1, column - 1].Dice != null;
+                if (column < 3)
+                    hasTouchingDie = hasTouchingDie || TileArray[row + 1, column + 1].Dice != null;
+            }
+            if (column > 0)
+            {
+                valid = valid && TileArray[row, column - 1].PlacementCheck(d);
+                hasTouchingDie = hasTouchingDie || TileArray[row, column - 1].Dice != null;
+            }
+            if (column < 3)
+            {
+                valid = valid && TileArray[row, column + 1].PlacementCheck(d);
+                hasTouchingDie = hasTouchingDie || TileArray[row, column + 1].Dice != null;
+            }
+
+            return valid && hasTouchingDie;
         }
 
         public override void Draw(Graphics paper)

@@ -80,6 +80,7 @@ namespace Sagrada
                             c.RemoveSelected();
                             selected = null;
                             currentRoundTurn++;
+                            w.IsFirstDice = false;
                         }
                         else
                         {
@@ -96,7 +97,7 @@ namespace Sagrada
                         if (c.Selected.Color != Color.White)
                             selected = c.Selected;
                         else
-                            c.ResetSelected();
+                            ResetSelected();
                     }
                     else
                     {
@@ -109,8 +110,7 @@ namespace Sagrada
                 }
                 else
                 {
-                    selected = null;
-                    c.ResetSelected();
+                    ResetSelected();
                 }
 
                 this.Invalidate();
@@ -151,7 +151,8 @@ namespace Sagrada
                     r.AddDice(roundIndex, d);
 
             roundIndex++;
-            currentRoundTurn = 0;
+            currentRoundTurn = 1;
+            toolUsedTurn = 0;
 
             this.Invalidate();
 
@@ -163,6 +164,12 @@ namespace Sagrada
             }
             else
                 c.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
+        }
+
+        private void ResetSelected()
+        {
+            selected = null;
+            c.ResetSelected();
         }
     }
 }

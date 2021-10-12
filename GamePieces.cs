@@ -53,18 +53,18 @@ namespace Sagrada
                 }
             }
 
-            windowList[0][2, 0] = new Tile(Color.Green);
-            windowList[0][0, 1] = new Tile(2);
-            windowList[0][1, 1] = new Tile(Color.Yellow);
-            windowList[0][2, 1] = new Tile(5);
-            windowList[0][3, 1] = new Tile(Color.Blue);
-            windowList[0][4, 1] = new Tile(1);
-            windowList[0][1, 2] = new Tile(Color.Red);
-            windowList[0][2, 2] = new Tile(3);
-            windowList[0][3, 2] = new Tile(Color.Purple);
-            windowList[0][0, 3] = new Tile(1);
-            windowList[0][2, 3] = new Tile(6);
-            windowList[0][4, 3] = new Tile(4);
+            //windowList[0][2, 0] = new Tile(Color.Green);
+            //windowList[0][0, 1] = new Tile(2);
+            //windowList[0][1, 1] = new Tile(Color.Yellow);
+            //windowList[0][2, 1] = new Tile(5);
+            //windowList[0][3, 1] = new Tile(Color.Blue);
+            //windowList[0][4, 1] = new Tile(1);
+            //windowList[0][1, 2] = new Tile(Color.Red);
+            //windowList[0][2, 2] = new Tile(3);
+            //windowList[0][3, 2] = new Tile(Color.Purple);
+            //windowList[0][0, 3] = new Tile(1);
+            //windowList[0][2, 3] = new Tile(6);
+            //windowList[0][4, 3] = new Tile(4);
 
             windowList.Add(new Tile[5, 4]);
 
