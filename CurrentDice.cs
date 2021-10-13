@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sagrada
 {
-    class CurrentDice : BoardPiece
+    class CurrentDice : InteractiveBoardPiece
     {
         private const int DICE_PER_ROUND = 4;
 
@@ -22,65 +22,71 @@ namespace Sagrada
             diceArray = new Dice[DICE_PER_ROUND];
         }
 
-        public bool HasSelected()
+        public Dice[] DiceArray
         {
-            if (selectedIndex != -1)
+            get { return diceArray; }
+        }
+
+        public Dice Selected
+        {
+            get { return diceArray[selectedIndex]; }
+        }
+
+        public override bool IsMouseOn(int x, int y)
+        {
+            if (x >= left && x <= left + Dice.DICE_SIZE * DICE_PER_ROUND + PEN_THICKNESS * (DICE_PER_ROUND - 1) && y >= top && y <= top + Dice.DICE_SIZE)
                 return true;
             return false;
         }
 
+        public void SetSelected(int x, int y)
+        {
+            selectedIndex = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
+        }
+
+        public void ResetSelected()
+        {
+            selectedIndex = -1;
+        }
+
+        public void RemoveSelected()
+        {
+            diceArray[selectedIndex] = new Dice(Color.White, 0);
+            ResetSelected();
+        }
+
+        public void FlipSelected()
+        {
+            diceArray[selectedIndex].Flip();
+        }
+
+        public void Clear()
+        {
+            for (int i = 0; i < DICE_PER_ROUND; i++)
+            {
+                diceArray[i] = new Dice(Color.White, 0);
+            }
+        }
+
         public void SetDice(Dice d1, Dice d2, Dice d3, Dice d4)
         {
-            d1.MoveTo(left, top);
-            d2.MoveTo(left + DICE_SIZE + PEN_THICKNESS, top);
-            d3.MoveTo(left + (DICE_SIZE + PEN_THICKNESS) * 2, top);
-            d4.MoveTo(left + (DICE_SIZE + PEN_THICKNESS) * 3, top);
-
             diceArray[0] = d1;
             diceArray[1] = d2;
             diceArray[2] = d3;
             diceArray[3] = d4;
         }
 
-        public void ClickCheck(int x, int y)
-        {
-            if (x >= left && x <= left + DICE_SIZE * DICE_PER_ROUND + PEN_THICKNESS * (DICE_PER_ROUND - 1) && y >= top && y <= top + DICE_SIZE)
-            {
-                selectedIndex = (x - left) / (DICE_SIZE + PEN_THICKNESS);
-
-                Console.WriteLine(diceArray[selectedIndex]);
-            }
-        }
-
-        public Dice SendToWindow()
-        {
-            Dice selected = diceArray[selectedIndex];
-
-            diceArray[selectedIndex] = new Dice(Color.White, 0, left + (DICE_SIZE + PEN_THICKNESS) * selectedIndex, top);
-
-            return selected;
-        }
-
         public override void Draw(Graphics paper)
         {
             Pen pen = new Pen(Color.Black, PEN_THICKNESS);
 
-            paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * DICE_PER_ROUND + PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) + PEN_THICKNESS);
+            paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (Dice.DICE_SIZE + PEN_THICKNESS) * DICE_PER_ROUND + PEN_THICKNESS, (Dice.DICE_SIZE + PEN_THICKNESS) + PEN_THICKNESS);
 
-            Dice currentDice;
+            for (int i = 0; i < DICE_PER_ROUND; i++)
+                diceArray[i].Draw(paper, left + (Dice.DICE_SIZE + PEN_THICKNESS) * i, top);
 
-            int x = left;
-
-            foreach (Dice d in diceArray)
-            {
-                d.Draw(paper);
-            }
-
-            //for (int i = 0; i < ROUNDS; i++)
-            //{
-            //    if (diceArray[i].Count > 0)
-            //        diceArray[i][diceIndex[i]].Draw(paper);
-            //}
+            if (selectedIndex != -1)
+                diceArray[selectedIndex].Draw(paper, left + (Dice.DICE_SIZE + PEN_THICKNESS) * selectedIndex, top, Color.Gray);
         }
     }
 }

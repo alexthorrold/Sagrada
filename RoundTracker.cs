@@ -7,10 +7,14 @@ using System.Threading.Tasks;
 
 namespace Sagrada
 {
-    class RoundTracker : BoardPiece
+    class RoundTracker : InteractiveBoardPiece
     {
+        public const int ROUNDS = 10;
+
         private List<Dice>[] diceArray;
         private int[] diceIndex;
+
+        private Dice unplayedRoundDice;
 
         public RoundTracker(int x, int y)
         {
@@ -20,41 +24,61 @@ namespace Sagrada
             diceArray = new List<Dice>[ROUNDS];
 
             for (int i = 0; i < ROUNDS; i++)
-            {
                 diceArray[i] = new List<Dice>();
-                AddDice(i, new Dice(Color.Red, 5));
-                AddDice(i, new Dice(Color.Blue, 3));
-            }
 
             diceIndex = new int[ROUNDS];
+            unplayedRoundDice = new Dice(Color.White, 0);
+        }
+
+        public List<Dice>[] DiceArray
+        {
+            get { return diceArray; }
+        }
+
+        public int Total
+        {
+            get
+            {
+                int total = 0;
+
+                foreach (List<Dice> ld in diceArray)
+                    foreach (Dice d in ld)
+                        total += d.Number;
+
+                return total;
+            }
         }
 
         public void AddDice(int round, Dice d)
         {
-            d.MoveTo(left + (DICE_SIZE + PEN_THICKNESS) * (round), top);
             diceArray[round].Add(d);
         }
 
-        public void ClickCheck(int x, int y)
+        public override bool IsMouseOn(int x, int y)
         {
-            if (x >= left && x <= left + DICE_SIZE * ROUNDS + PEN_THICKNESS * (ROUNDS - 1) && y >= top && y <= top + DICE_SIZE)
-            {
-                int round = (x - left) / (DICE_SIZE + PEN_THICKNESS);
+            return x >= left && x <= left + Dice.DICE_SIZE * ROUNDS + PEN_THICKNESS * (ROUNDS - 1) && y >= top && y <= top + Dice.DICE_SIZE;
+        }
 
+        public void Index(int x, int y)
+        {
+            int round = (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
+            
+            if (diceArray[round].Count > 1)
                 diceIndex[round] = (diceIndex[round] + 1) % diceArray[round].Count;
-            }
         }
 
         public override void Draw(Graphics paper)
         {
             Pen pen = new Pen(Color.Black, PEN_THICKNESS);
 
-            paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * ROUNDS + PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) + PEN_THICKNESS);
+            paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (Dice.DICE_SIZE + PEN_THICKNESS) * ROUNDS + PEN_THICKNESS, (Dice.DICE_SIZE + PEN_THICKNESS) + PEN_THICKNESS);
 
             for (int i = 0; i < ROUNDS; i++)
             {
                 if (diceArray[i].Count > 0)
-                    diceArray[i][diceIndex[i]].Draw(paper);
+                    diceArray[i][diceIndex[i]].Draw(paper, left + (Dice.DICE_SIZE + PEN_THICKNESS) * i, top);
+                else
+                    unplayedRoundDice.Draw(paper, left + (Dice.DICE_SIZE + PEN_THICKNESS) * i, top);
             }
         }
     }

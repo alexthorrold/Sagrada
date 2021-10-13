@@ -7,147 +7,127 @@ using System.Drawing;
 
 namespace Sagrada
 {
-    public class WindowPattern : BoardPiece
+    public class WindowPattern : InteractiveBoardPiece
     {
-        private const int ROWS = 5;
-        private const int COLUMNS = 4;
+        public const int ROWS = 5;
+        public const int COLUMNS = 4;
 
-        private Dice[,] diceArray;
-        private Dice[,] requirementArray;
+        private Tile[,] tileArray;
+
+        bool isFirstDice = true;
 
         public WindowPattern(Dice[,] reqArray)
         {
-            diceArray = new Dice[ROWS, COLUMNS];
+            tileArray = new Tile[ROWS, COLUMNS];
 
-            if (reqArray.GetLength(0) == ROWS && reqArray.GetLength(1) == COLUMNS)
-            {
-                requirementArray = reqArray;
-            }
+            tileArray[2, 2] = new Tile(Color.Blue);
+            tileArray[3, 3] = new Tile(4);
+        }
+
+        public WindowPattern(Tile[,] reqArray, int x, int y)
+        {
+            if (reqArray.GetLength(0) == 5 && reqArray.GetLength(1) == 4)
+                tileArray = reqArray;
             else
-            {
-                throw new Exception("Provided array is not of correct size");
-            }
+                throw new Exception("Array of invalid size received.");
 
-            //diceArray[1, 1] = new Dice(Color.Blue, 2);
-
-            //requirementArray = new Dice[ROWS, COLUMNS];
-
-            //requirementArray[0, 1] = new Dice(Color.Gray, 5);
-            //requirementArray[0, 1].MoveTo(50, 50 + 99);
-            //requirementArray[1, 1] = new Dice(Color.DarkRed, 0);
-            //requirementArray[1, 1].MoveTo(50 + 99, 50 + 99);
-
-            //left = x;
-            //top = y;
+            left = x;
+            top = y;
         }
 
-        public Dice[,] DiceArray
+        public Tile[,] TileArray
         {
-            get { return diceArray; }
+            get { return tileArray; }
         }
 
-        //public void AddRequirement(int row, int col, Color c, int i)
-        //{
-        //    if (row < ROWS && col < COLUMNS)
-        //    {
-        //        requirementArray[row, col] = new Dice(c, i);
-        //    }
-        //    else
-        //    {
-        //        throw new Exception("Row or column is invalid");
-        //    }
-        //}
-
-        public void ClickCheck(Dice d, int x, int y)
+        public bool IsFirstDice
         {
-            if (d.Color != Color.White && x >= left && x <= left + DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1)
-                && y >= top && y <= top + (DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
-            {
-                int row = (x - left) / (DICE_SIZE + PEN_THICKNESS);
-                int column = (y - top) / (DICE_SIZE + PEN_THICKNESS);
-
-                if (diceArray[row, column] == null && PlacementCheck(d, row, column))
-                {
-                    d.MoveTo(left + row * (DICE_SIZE + PEN_THICKNESS), top + column * (DICE_SIZE + PEN_THICKNESS));
-                    DiceArray[row, column] = d;
-                }   
-            }
+            get { return isFirstDice; }
+            set { isFirstDice = value; }
         }
 
-        public bool PlacementCheck(Dice d, int row, int column)
+        public void AddDice(Dice d, int row, int column)
         {
-            if (requirementArray[row - 1, column].PlacementCheck(d) && requirementArray[row + 1, column].PlacementCheck(d)
-                && requirementArray[row, column - 1].PlacementCheck(d) && requirementArray[row, column + 1].PlacementCheck(d))
+            tileArray[row, column].Dice = d;
+        }
+
+        public int GetRow(int x)
+        {
+            return (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
+        }
+
+        public int GetColumn(int y)
+        {
+            return (y - top) / (Dice.DICE_SIZE + PEN_THICKNESS);
+        }
+
+        public override bool IsMouseOn(int x, int y)
+        {
+            if (x >= left && x <= left + Dice.DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1)
+                && y >= top && y <= top + (Dice.DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))
                 return true;
             return false;
         }
 
-        public void MoveTo(int x, int y)
+        public bool PlacementCheck(Dice d, int row, int column)
         {
-            left = x;
-            top = y;
+            //Checks whether there isn't already a dice in 
+            bool valid = TileArray[row, column].Dice == null && TileArray[row, column].RequirementCheck(d);
+            bool hasTouchingDie = false;
 
-            int xPos = left;
-            int yPos;
-
-            for (int a = 0; a < ROWS; a++)
+            if (isFirstDice)
             {
-                yPos = top;
-
-                for (int b = 0; b < COLUMNS; b++)
-                {
-                    if (DiceArray[a, b] != null)
-                    {
-                        DiceArray[a, b].MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + 50, b * (DICE_SIZE + PEN_THICKNESS) + 50);
-                    }
-                    else if (requirementArray[a, b] != null)
-                    {
-                        requirementArray[a, b].MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + 50, b * (DICE_SIZE + PEN_THICKNESS) + 50);
-                    }
-
-                    yPos += DICE_SIZE + PEN_THICKNESS;
-                }
-                xPos += DICE_SIZE + PEN_THICKNESS;
+                valid = valid && (row == 0 || row == ROWS - 1 || column == 0 || column == COLUMNS - 1);
+                
+                //The first die doesn't require an adjacent die
+                hasTouchingDie = true;
             }
+
+            //Checks number, color of surrounding dice and whether the die is placed next to at least one other die
+            //Doesn't check cases where row or column is outside of array bounds
+            if (row > 0)
+            {
+                valid = valid && TileArray[row - 1, column].PlacementCheck(d);
+                hasTouchingDie = hasTouchingDie || TileArray[row - 1, column].Dice != null;
+
+                if (column > 0)
+                    hasTouchingDie = hasTouchingDie || TileArray[row - 1, column - 1].Dice != null;
+                if (column < 3)
+                    hasTouchingDie = hasTouchingDie || TileArray[row - 1, column + 1].Dice != null;
+            }
+            if (row < 4)
+            {
+                valid = valid && TileArray[row + 1, column].PlacementCheck(d);
+                hasTouchingDie = hasTouchingDie || TileArray[row + 1, column].Dice != null;
+
+                if (column > 0)
+                    hasTouchingDie = hasTouchingDie || TileArray[row + 1, column - 1].Dice != null;
+                if (column < 3)
+                    hasTouchingDie = hasTouchingDie || TileArray[row + 1, column + 1].Dice != null;
+            }
+            if (column > 0)
+            {
+                valid = valid && TileArray[row, column - 1].PlacementCheck(d);
+                hasTouchingDie = hasTouchingDie || TileArray[row, column - 1].Dice != null;
+            }
+            if (column < 3)
+            {
+                valid = valid && TileArray[row, column + 1].PlacementCheck(d);
+                hasTouchingDie = hasTouchingDie || TileArray[row, column + 1].Dice != null;
+            }
+
+            return valid && hasTouchingDie;
         }
 
         public override void Draw(Graphics paper)
         {
             Pen pen = new Pen(Color.Black, PEN_THICKNESS);
 
-            paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * ROWS + PEN_THICKNESS, (DICE_SIZE + PEN_THICKNESS) * COLUMNS + PEN_THICKNESS);
-
-            Dice currentDice;
-
-            int x = left;
-            int y;
+            paper.DrawRectangle(pen, left - PEN_THICKNESS, top - PEN_THICKNESS, (Dice.DICE_SIZE + PEN_THICKNESS) * ROWS + PEN_THICKNESS, (Dice.DICE_SIZE + PEN_THICKNESS) * COLUMNS + PEN_THICKNESS);
 
             for (int a = 0; a < ROWS; a++)
-            {
-                y = top;
-
                 for (int b = 0; b < COLUMNS; b++)
-                {
-                    if (DiceArray[a, b] != null)
-                    {
-                        currentDice = DiceArray[a, b];
-                    }
-                    else if (requirementArray[a, b] != null)
-                    {
-                        currentDice = requirementArray[a, b];
-                        currentDice.MoveTo(a * (DICE_SIZE + PEN_THICKNESS) + left, b * (DICE_SIZE + PEN_THICKNESS) + top);
-                    }
-                    else
-                    {
-                        currentDice = new Dice(Color.LightGray, 0, a * (DICE_SIZE + PEN_THICKNESS) + left, b * (DICE_SIZE + PEN_THICKNESS) + top);
-                    }
-
-                    currentDice.Draw(paper);
-
-                    y += DICE_SIZE + PEN_THICKNESS;
-                }
-                x += DICE_SIZE + PEN_THICKNESS;
-            }
+                    tileArray[a, b].Draw(paper, left + (Dice.DICE_SIZE + BoardPiece.PEN_THICKNESS) * a, top + (Dice.DICE_SIZE + BoardPiece.PEN_THICKNESS) * b);
         }
     }
 }
