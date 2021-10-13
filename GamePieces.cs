@@ -11,9 +11,11 @@ namespace Sagrada
     {
         private List<Dice> diceList;
         private List<Tile[,]> windowList;
+        private List<Color> privColorList;
 
         private int diceIndex = 0;
         private int windowIndex = 0;
+        private int colorIndex = 0;
 
         public GamePieces()
         {
@@ -139,6 +141,8 @@ namespace Sagrada
             windowList[3][1, 3] = new Tile(3);
             windowList[3][3, 3] = new Tile(5);
 
+            privColorList = new List<Color> { Color.Yellow, Color.Red, Color.Purple, Color.Green, Color.Blue };
+
             RandomiseOrder();
         }
 
@@ -171,6 +175,19 @@ namespace Sagrada
             }
 
             windowList = randomWindows;
+
+            List<Color> randomColors = new List<Color>();
+            n = privColorList.Count;
+
+            while (n > 0)
+            {
+                r = rand.Next(n);
+                randomColors.Add(privColorList[r]);
+                privColorList.RemoveAt(r);
+                n--;
+            }
+
+            privColorList = randomColors;
         }
 
         public Dice GetDice()
@@ -190,6 +207,14 @@ namespace Sagrada
         {
             windowIndex--;
             return windowList[windowIndex % 4];
+        }
+
+        public ColorSumCard GetPrivateCard(int x, int y)
+        {
+            ColorSumCard card = new ColorSumCard(privColorList[colorIndex], x, y);
+            colorIndex++;
+
+            return card;
         }
     }
 }

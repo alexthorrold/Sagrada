@@ -13,10 +13,13 @@ namespace Sagrada
     public partial class Form1 : Form
     {
         GamePieces gamePieces = new GamePieces();
-        WindowPattern w;
-        RoundTracker r = new RoundTracker(450, 50);
-        CurrentDice c = new CurrentDice(500, 200);
+        WindowPattern windowPattern;
+        RoundTracker roundTracker = new RoundTracker(450, 50);
+        CurrentDice currentDice = new CurrentDice(500, 200);
         Dice selected = new Dice(Color.Red, 4);
+        //Holds the objectives the player will gain score for,
+        //First two spots are private objectives, last two spots are public objectives
+        ColorSumCard[] objectiveArray = new ColorSumCard[4];
 
         bool gameStarted = false;
         int roundIndex = 0;
@@ -39,19 +42,24 @@ namespace Sagrada
         {
             this.Invalidate();
 
-            w = new WindowPattern(gamePieces.GetNextRequirements(), 50, 50);
-
-            c.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
+            windowPattern = new WindowPattern(gamePieces.GetNextRequirements(), 50, 50);
+            currentDice.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
+            objectiveArray[0] = gamePieces.GetPrivateCard(10, 500);
+            objectiveArray[1] = gamePieces.GetPrivateCard(300, 500);
         }
 
-        private void Form1_Paint(object sender, PaintEventArgs e)
+            private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            w.Draw(e.Graphics);
+            windowPattern.Draw(e.Graphics);
+
+            foreach (ColorSumCard c in objectiveArray)
+                if (c != null) //REMOVE THIS LINE - FOR TESTING ONLY
+                    c.Draw(e.Graphics);
 
             if (gameStarted)
             {
-                r.Draw(e.Graphics);
-                c.Draw(e.Graphics);
+                roundTracker.Draw(e.Graphics);
+                currentDice.Draw(e.Graphics);
             }
 
             //priv1.Draw(e.Graphics);
@@ -67,20 +75,20 @@ namespace Sagrada
         {
             if (gameStarted)
             {
-                if (w.IsMouseOn(e.X, e.Y))
+                if (windowPattern.IsMouseOn(e.X, e.Y))
                 {
                     if (selected != null)
                     {
-                        int row = w.GetRow(e.X);
-                        int column = w.GetColumn(e.Y);
+                        int row = windowPattern.GetRow(e.X);
+                        int column = windowPattern.GetColumn(e.Y);
 
-                        if (w.PlacementCheck(selected, row, column))
+                        if (windowPattern.PlacementCheck(selected, row, column))
                         {
-                            w.AddDice(selected, row, column);
-                            c.RemoveSelected();
+                            windowPattern.AddDice(selected, row, column);
+                            currentDice.RemoveSelected();
                             selected = null;
                             currentRoundTurn++;
-                            w.IsFirstDice = false;
+                            windowPattern.IsFirstDice = false;
                         }
                         else
                         {
@@ -88,14 +96,14 @@ namespace Sagrada
                         }
                     }
                 }
-                else if (c.IsMouseOn(e.X, e.Y))
+                else if (currentDice.IsMouseOn(e.X, e.Y))
                 {
                     if (currentRoundTurn < 3)
                     {
-                        c.SetSelected(e.X, e.Y);
+                        currentDice.SetSelected(e.X, e.Y);
 
-                        if (c.Selected.Color != Color.White)
-                            selected = c.Selected;
+                        if (currentDice.Selected.Color != Color.White)
+                            selected = currentDice.Selected;
                         else
                             ResetSelected();
                     }
@@ -104,9 +112,9 @@ namespace Sagrada
                         MessageBox.Show("Maximum placements for this round reached.");
                     }
                 }
-                else if (r.IsMouseOn(e.X, e.Y))
+                else if (roundTracker.IsMouseOn(e.X, e.Y))
                 {
-                    r.Index(e.X, e.Y);
+                    roundTracker.Index(e.X, e.Y);
                 }
                 else
                 {
@@ -123,13 +131,13 @@ namespace Sagrada
 
         private void buttonPrevious_Click(object sender, EventArgs e)
         {
-            w = new WindowPattern(gamePieces.GetPreviousRequirements(), 50, 50);
+            windowPattern = new WindowPattern(gamePieces.GetPreviousRequirements(), 50, 50);
             this.Invalidate();
         }
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
-            w = new WindowPattern(gamePieces.GetNextRequirements(), 50, 50);
+            windowPattern = new WindowPattern(gamePieces.GetNextRequirements(), 50, 50);
             this.Invalidate();
         }
 
@@ -146,30 +154,47 @@ namespace Sagrada
 
         private void buttonNextRound_Click(object sender, EventArgs e)
         {
-            foreach (Dice d in c.DiceArray)
+            foreach (Dice d in currentDice.DiceArray)
                 if (d.Color != Color.White)
-                    r.AddDice(roundIndex, d);
+                    roundTracker.AddDice(roundIndex, d);
 
             roundIndex++;
             currentRoundTurn = 1;
             toolUsedTurn = 0;
 
+            ResetSelected();
+
             this.Invalidate();
 
             if (roundIndex == 10)
             {
+                int scoreToBeat = roundTracker.Total;
+                int playerScore = 0;
+
+                foreach (ColorSumCard c in objectiveArray)
+                    if (c != null) //REMOVE THIS LINE - TESTING ONLY
+                        playerScore += c.Score(windowPattern.TileArray);
+
+                if (playerScore > scoreToBeat)
+                    MessageBox.Show("You win!");
+                else
+                    MessageBox.Show("You lose!");
+
+                MessageBox.Show(playerScore.ToString());
+
                 buttonNextRound.Hide();
-                c.Clear();
-                MessageBox.Show(r.Total.ToString());
+                currentDice.Clear();
             }
             else
-                c.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
+            {
+                currentDice.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
+            }
         }
 
         private void ResetSelected()
         {
             selected = null;
-            c.ResetSelected();
+            currentDice.ResetSelected();
         }
     }
 }
