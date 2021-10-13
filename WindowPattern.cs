@@ -46,6 +46,20 @@ namespace Sagrada
             set { isFirstDice = value; }
         }
 
+        public int WhiteSpaces
+        {
+            get
+            {
+                int i = 0;
+
+                foreach (Tile t in tileArray)
+                    if (t.Dice == null)
+                        i++;
+
+                return i;
+            }
+        }
+
         public void AddDice(Dice d, int row, int column)
         {
             tileArray[row, column].Dice = d;
@@ -124,6 +138,24 @@ namespace Sagrada
             }
 
             return valid && hasTouchingDie;
+        }
+
+        public bool IsPlaceable(Dice d)
+        {
+            bool isPlaceable = false;
+
+            for (int a = 0; a < ROWS && !isPlaceable; a++)
+            {
+                for (int b = 0; b < COLUMNS && !isPlaceable; b++)
+                {
+                    if (tileArray[a, b].Dice != null)
+                    {
+                        isPlaceable = PlacementCheck(tileArray[a, b].Dice, a, b);
+                    }
+                }
+            }
+
+            return isPlaceable;
         }
 
         public override void Draw(Graphics paper)

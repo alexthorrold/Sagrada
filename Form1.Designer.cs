@@ -32,7 +32,7 @@ namespace Sagrada
             this.buttonProceed = new System.Windows.Forms.Button();
             this.buttonPrevious = new System.Windows.Forms.Button();
             this.buttonNext = new System.Windows.Forms.Button();
-            this.buttonNextRound = new System.Windows.Forms.Button();
+            this.buttonNextTurn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonProceed
@@ -65,16 +65,16 @@ namespace Sagrada
             this.buttonNext.UseVisualStyleBackColor = true;
             this.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
             // 
-            // buttonNextRound
+            // buttonNextTurn
             // 
-            this.buttonNextRound.Location = new System.Drawing.Point(654, 560);
-            this.buttonNextRound.Name = "buttonNextRound";
-            this.buttonNextRound.Size = new System.Drawing.Size(75, 23);
-            this.buttonNextRound.TabIndex = 3;
-            this.buttonNextRound.Text = "Next Round";
-            this.buttonNextRound.UseVisualStyleBackColor = true;
-            this.buttonNextRound.Visible = false;
-            this.buttonNextRound.Click += new System.EventHandler(this.buttonNextRound_Click);
+            this.buttonNextTurn.Location = new System.Drawing.Point(654, 560);
+            this.buttonNextTurn.Name = "buttonNextTurn";
+            this.buttonNextTurn.Size = new System.Drawing.Size(75, 23);
+            this.buttonNextTurn.TabIndex = 3;
+            this.buttonNextTurn.Text = "Next Turn";
+            this.buttonNextTurn.UseVisualStyleBackColor = true;
+            this.buttonNextTurn.Visible = false;
+            this.buttonNextTurn.Click += new System.EventHandler(this.buttonNextTurn_Click);
             // 
             // Form1
             // 
@@ -82,7 +82,7 @@ namespace Sagrada
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.ForestGreen;
             this.ClientSize = new System.Drawing.Size(1184, 661);
-            this.Controls.Add(this.buttonNextRound);
+            this.Controls.Add(this.buttonNextTurn);
             this.Controls.Add(this.buttonNext);
             this.Controls.Add(this.buttonPrevious);
             this.Controls.Add(this.buttonProceed);
@@ -101,7 +101,7 @@ namespace Sagrada
         private System.Windows.Forms.Button buttonProceed;
         private System.Windows.Forms.Button buttonPrevious;
         private System.Windows.Forms.Button buttonNext;
-        private System.Windows.Forms.Button buttonNextRound;
+        private System.Windows.Forms.Button buttonNextTurn;
     }
 }
 

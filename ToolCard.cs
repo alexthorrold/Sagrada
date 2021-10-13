@@ -9,11 +9,18 @@ namespace Sagrada
     public abstract class ToolCard : InteractiveBoardPiece
     {
         protected bool used = false;
+        protected bool selected = false;
 
         public bool Used
         {
             get { return used; }
             set { used = value; }
+        }
+
+        public bool Selected
+        {
+            get { return selected; }
+            set { selected = value; }
         }
 
         public override bool IsMouseOn(int x, int y)

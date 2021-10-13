@@ -21,9 +21,10 @@ namespace Sagrada
         //Holds the objectives the player will gain score for,
         //First two spots are private objectives, last two spots are public objectives
         ObjectiveCard[] objectiveArray = new ObjectiveCard[4];
-        ToolCard[] toolCardArray = new ToolCard[3] { new GrozingPliersToolCard(10, 300), null, null };
+        ToolCard[] toolCardArray = new ToolCard[3] { new GlazingHammerToolCard(10, 300), new GrindingStoneToolCard(300, 500), null };
 
         bool gameStarted = false;
+        bool draftSelected = false;
         int roundIndex = 0;
         int currentRoundTurn = 1;
         int toolUsedTurn = 0;
@@ -86,7 +87,7 @@ namespace Sagrada
                             windowPattern.AddDice(selectedDie, row, column);
                             draftPool.RemoveSelected();
                             selectedDie = null;
-                            currentRoundTurn++;
+                            Next();
                             windowPattern.IsFirstDice = false;
                         }
                         else
@@ -97,18 +98,36 @@ namespace Sagrada
                 }
                 else if (draftPool.IsMouseOn(e.X, e.Y))
                 {
-                    if (currentRoundTurn < 3)
-                    {
-                        draftPool.SetSelected(e.X, e.Y);
+                    draftPool.SetSelected(e.X, e.Y);
 
-                        if (draftPool.Selected.Color != Color.White)
-                            selectedDie = draftPool.Selected;
+                    if (draftPool.Selected.Color != Color.White)
+                    {
+                        if (selectedToolCard != null)
+                        {
+                            if (selectedToolCard is GrindingStoneToolCard)
+                            {
+                                draftPool.FlipSelected();
+                                selectedToolCard.Used = true;
+                                draftSelected = true;
+                                selectedDie = draftPool.Selected;
+                                ResetSelected();
+                            }
+                            else if (selectedToolCard is FluxBrushToolCard)
+                            {
+
+                            }
+                        }
                         else
-                            ResetSelected();
+                        {
+                            if (draftSelected == false)
+                                selectedDie = draftPool.Selected;
+                            else
+                                MessageBox.Show("Currently selected die has already been drafted by a tool card.");
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("Maximum placements for this round reached.");
+                        ResetSelected();
                     }
                 }
                 //Cycles through unplayed dice for the round clicked on
@@ -118,19 +137,38 @@ namespace Sagrada
                 }
                 else
                 {
+                    ResetSelected();
+
+                    //Sets selected toolcard if one has mouse on, otherwise selected tool card remains null
                     selectedToolCard = GetSelectedToolCard(e.X, e.Y);
 
+                    //If a tool card is selected, set selected property as true
                     if (selectedToolCard != null)
                     {
-                        if (selectedToolCard is GrozingPliersToolCard)
+                        if (selectedToolCard.Used == false)
                         {
+                            selectedToolCard.Selected = true;
 
+                            if (selectedToolCard is GlazingHammerToolCard)
+                            {
+                                if (currentRoundTurn == 2)
+                                {
+                                    draftPool.GlazingHammerReroll(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
+                                    selectedToolCard.Used = true;
+                                    ResetSelected();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Glazing Hammer tool card can only be played on the second turn of a round.");
+                                    ResetSelected();
+                                }
+                            }
                         }
-                    }
-                    //If mouse is not on any interactive board piece, reset any selected items
-                    else
-                    {
-                        ResetSelected();
+                        else
+                        {
+                            ResetSelected();
+                            MessageBox.Show("This tool card has already been used.");
+                        }
                     }
                 }
 
@@ -159,54 +197,84 @@ namespace Sagrada
             buttonPrevious.Hide();
             buttonNext.Hide();
             buttonProceed.Hide();
-            buttonNextRound.Show();
+            buttonNextTurn.Show();
 
             gameStarted = true;
             this.Invalidate();
         }
 
-        private void buttonNextRound_Click(object sender, EventArgs e)
+        private void buttonNextTurn_Click(object sender, EventArgs e)
         {
-            foreach (Dice d in draftPool.DiceArray)
-                if (d.Color != Color.White)
-                    roundTracker.AddDice(roundIndex, d);
+            draftSelected = false;
 
-            roundIndex++;
-            currentRoundTurn = 1;
-            toolUsedTurn = 0;
+            Next();
+        }
 
-            ResetSelected();
-
-            this.Invalidate();
-
-            if (roundIndex == 10)
+        private void Next()
+        {
+            if (currentRoundTurn == 1)
             {
-                int scoreToBeat = roundTracker.Total;
-                int playerScore = 0;
-
-                foreach (ObjectiveCard o in objectiveArray)
-                        playerScore += o.Score(windowPattern.TileArray);
-
-                if (playerScore > scoreToBeat)
-                    MessageBox.Show("The score to beat was " + scoreToBeat + ".\nYou scored " + playerScore + ".\nYou win!");
-                else
-                    MessageBox.Show("The score to beat was " + scoreToBeat + ".\nYou scored " + playerScore + ".\nYou lose!");
-
-                MessageBox.Show(objectiveArray[3].Score(windowPattern.TileArray).ToString());
-
-                buttonNextRound.Hide();
-                draftPool.Clear();
+                currentRoundTurn++;
             }
             else
             {
-                draftPool.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
+                foreach (Dice d in draftPool.DiceArray)
+                    if (d.Color != Color.White)
+                        roundTracker.AddDice(roundIndex, d);
+
+                roundIndex++;
+                currentRoundTurn = 1;
+                toolUsedTurn = 0;
+
+                ResetSelected();
+
+                this.Invalidate();
+
+                if (roundIndex == 10)
+                {
+                    GameFinished();
+                }
+                else
+                {
+                    draftPool.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
+                }
             }
+        }
+
+        private void GameFinished()
+        {
+            int scoreToBeat = roundTracker.Total;
+            int playerScore = 0;
+
+            foreach (ObjectiveCard o in objectiveArray)
+                playerScore += o.Score(windowPattern.TileArray);
+
+            playerScore -= (windowPattern.WhiteSpaces * 3);
+
+            if (playerScore < 0)
+                playerScore = 0;
+
+            if (playerScore > scoreToBeat)
+                MessageBox.Show("The score to beat was " + scoreToBeat + ".\nYou scored " + playerScore + ".\nYou win!");
+            else
+                MessageBox.Show("The score to beat was " + scoreToBeat + ".\nYou scored " + playerScore + ".\nYou lose!");
+
+            MessageBox.Show(objectiveArray[3].Score(windowPattern.TileArray).ToString());
+
+            buttonNextTurn.Hide();
+            draftPool.Clear();
         }
 
         private void ResetSelected()
         {
+            if (selectedToolCard != null)
+                selectedToolCard.Selected = false;
+
+            //Only resets selected die during current turn if it was not already drafted by a tool card
+            if (draftSelected == false)
+                selectedDie = null;
+
             selectedToolCard = null;
-            selectedDie = null;
             draftPool.ResetSelected();
         }
 
@@ -215,7 +283,10 @@ namespace Sagrada
             foreach (ToolCard t in toolCardArray)
                 if (t != null) //TESTING LINE - REMOVE
                     if (t.IsMouseOn(x, y))
+                    {
+                        t.Selected = true;
                         return t;
+                    }
 
             return null;
         }

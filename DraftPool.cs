@@ -76,6 +76,48 @@ namespace Sagrada
             diceArray[3] = d4;
         }
 
+        /// <summary>
+        /// Resets the three remaining dice when the Glazing Hammer tool card is used
+        /// </summary>
+        /// <param name="d1"></param>
+        /// <param name="d2"></param>
+        /// <param name="d3"></param>
+        public void GlazingHammerReroll(Dice d1, Dice d2, Dice d3, Dice d4)
+        {
+            if (diceArray[0].Color == Color.White)
+            {
+                diceArray[1] = d1;
+                diceArray[2] = d2;
+                diceArray[3] = d3;
+            }
+            else
+            {
+                diceArray[0] = d1;
+
+                if (diceArray[1].Color == Color.White)
+                {
+                    diceArray[2] = d2;
+                    diceArray[3] = d3;
+                }
+                else
+                {
+                    diceArray[1] = d2;
+
+                    if (diceArray[2].Color == Color.White)
+                    {
+                        diceArray[3] = d3;
+                    }
+                    else
+                    {
+                        diceArray[2] = d3;
+
+                        if (diceArray[3].Color != Color.White)
+                            diceArray[3] = d4;
+                    }
+                }
+            }
+        }
+
         public override void Draw(Graphics paper)
         {
             Pen pen = new Pen(Color.Black, PEN_THICKNESS);
