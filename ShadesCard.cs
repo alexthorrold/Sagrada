@@ -52,7 +52,7 @@ namespace Sagrada
             else
                 img = Image.FromFile(@"..\..\Resources\deep-shades.jpg");
 
-            paper.DrawImage(img, left, top, 105, 150);
+            paper.DrawImage(img, left, top, CARD_WIDTH, CARD_HEIGHT);
         }
 
         public override int Score(Tile[,] tileArray)

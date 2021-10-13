@@ -20,7 +20,7 @@ namespace Sagrada
         {
             Image img = Image.FromFile(@"..\..\Resources\column-shade-variety.jpg");
 
-            paper.DrawImage(img, left, top, 105, 150);
+            paper.DrawImage(img, left, top, CARD_WIDTH, CARD_HEIGHT);
         }
 
         public override int Score(Tile[,] tileArray)

@@ -51,6 +51,11 @@ namespace Sagrada
             tileArray[row, column].Dice = d;
         }
 
+        public void RemoveDice(int row, int column)
+        {
+            tileArray[row, column].Dice = null;
+        }
+
         public int GetRow(int x)
         {
             return (x - left) / (Dice.DICE_SIZE + PEN_THICKNESS);
@@ -90,6 +95,7 @@ namespace Sagrada
                 valid = valid && TileArray[row - 1, column].PlacementCheck(d);
                 hasTouchingDie = hasTouchingDie || TileArray[row - 1, column].Dice != null;
 
+                //Checks diagonal edge cases where inside array bounds
                 if (column > 0)
                     hasTouchingDie = hasTouchingDie || TileArray[row - 1, column - 1].Dice != null;
                 if (column < 3)
@@ -100,6 +106,7 @@ namespace Sagrada
                 valid = valid && TileArray[row + 1, column].PlacementCheck(d);
                 hasTouchingDie = hasTouchingDie || TileArray[row + 1, column].Dice != null;
 
+                //Checks diagonal edge cases where inside array bounds
                 if (column > 0)
                     hasTouchingDie = hasTouchingDie || TileArray[row + 1, column - 1].Dice != null;
                 if (column < 3)

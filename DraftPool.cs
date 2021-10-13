@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Sagrada
 {
-    class CurrentDice : InteractiveBoardPiece
+    class DraftPool : InteractiveBoardPiece
     {
         private const int DICE_PER_ROUND = 4;
 
         private Dice[] diceArray;
         private int selectedIndex = -1;
 
-        public CurrentDice(int x, int y)
+        public DraftPool(int x, int y)
         {
             left = x;
             top = y;

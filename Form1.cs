@@ -15,11 +15,13 @@ namespace Sagrada
         GamePieces gamePieces = new GamePieces();
         WindowPattern windowPattern;
         RoundTracker roundTracker = new RoundTracker(450, 50);
-        CurrentDice currentDice = new CurrentDice(500, 200);
-        Dice selected = new Dice(Color.Red, 4);
+        DraftPool draftPool = new DraftPool(500, 200);
+        Dice selectedDie = new Dice(Color.Red, 4);
+        ToolCard selectedToolCard;
         //Holds the objectives the player will gain score for,
         //First two spots are private objectives, last two spots are public objectives
         ObjectiveCard[] objectiveArray = new ObjectiveCard[4];
+        ToolCard[] toolCardArray = new ToolCard[3] { new GrozingPliersToolCard(10, 300), null, null };
 
         bool gameStarted = false;
         int roundIndex = 0;
@@ -39,7 +41,7 @@ namespace Sagrada
             this.Invalidate();
 
             windowPattern = new WindowPattern(gamePieces.GetNextRequirements(), 50, 50);
-            currentDice.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
+            draftPool.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
             objectiveArray[0] = gamePieces.GetPrivateCard(10, 300);
             objectiveArray[1] = gamePieces.GetPrivateCard(300, 300);
             objectiveArray[2] = gamePieces.GetPublicCard(10, 500);
@@ -50,14 +52,18 @@ namespace Sagrada
         {
             windowPattern.Draw(e.Graphics);
 
-            foreach (ObjectiveCard o in objectiveArray)
-                    o.Draw(e.Graphics);
+            //foreach (ObjectiveCard o in objectiveArray)
+            //        o.Draw(e.Graphics);
 
             if (gameStarted)
             {
                 roundTracker.Draw(e.Graphics);
-                currentDice.Draw(e.Graphics);
+                draftPool.Draw(e.Graphics);
             }
+
+            foreach (ToolCard t in toolCardArray)
+                if (t != null) //TESTING LINE - REMOVE
+                    t.Draw(e.Graphics);
 
             //tool1.Draw(e.Graphics);
             //tool2.Draw(e.Graphics);
@@ -70,16 +76,16 @@ namespace Sagrada
             {
                 if (windowPattern.IsMouseOn(e.X, e.Y))
                 {
-                    if (selected != null)
+                    if (selectedDie != null)
                     {
                         int row = windowPattern.GetRow(e.X);
                         int column = windowPattern.GetColumn(e.Y);
 
-                        if (windowPattern.PlacementCheck(selected, row, column))
+                        if (windowPattern.PlacementCheck(selectedDie, row, column))
                         {
-                            windowPattern.AddDice(selected, row, column);
-                            currentDice.RemoveSelected();
-                            selected = null;
+                            windowPattern.AddDice(selectedDie, row, column);
+                            draftPool.RemoveSelected();
+                            selectedDie = null;
                             currentRoundTurn++;
                             windowPattern.IsFirstDice = false;
                         }
@@ -89,14 +95,14 @@ namespace Sagrada
                         }
                     }
                 }
-                else if (currentDice.IsMouseOn(e.X, e.Y))
+                else if (draftPool.IsMouseOn(e.X, e.Y))
                 {
                     if (currentRoundTurn < 3)
                     {
-                        currentDice.SetSelected(e.X, e.Y);
+                        draftPool.SetSelected(e.X, e.Y);
 
-                        if (currentDice.Selected.Color != Color.White)
-                            selected = currentDice.Selected;
+                        if (draftPool.Selected.Color != Color.White)
+                            selectedDie = draftPool.Selected;
                         else
                             ResetSelected();
                     }
@@ -112,7 +118,20 @@ namespace Sagrada
                 }
                 else
                 {
-                    ResetSelected();
+                    selectedToolCard = GetSelectedToolCard(e.X, e.Y);
+
+                    if (selectedToolCard != null)
+                    {
+                        if (selectedToolCard is GrozingPliersToolCard)
+                        {
+
+                        }
+                    }
+                    //If mouse is not on any interactive board piece, reset any selected items
+                    else
+                    {
+                        ResetSelected();
+                    }
                 }
 
                 this.Invalidate();
@@ -148,7 +167,7 @@ namespace Sagrada
 
         private void buttonNextRound_Click(object sender, EventArgs e)
         {
-            foreach (Dice d in currentDice.DiceArray)
+            foreach (Dice d in draftPool.DiceArray)
                 if (d.Color != Color.White)
                     roundTracker.AddDice(roundIndex, d);
 
@@ -176,18 +195,29 @@ namespace Sagrada
                 MessageBox.Show(objectiveArray[3].Score(windowPattern.TileArray).ToString());
 
                 buttonNextRound.Hide();
-                currentDice.Clear();
+                draftPool.Clear();
             }
             else
             {
-                currentDice.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
+                draftPool.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
             }
         }
 
         private void ResetSelected()
         {
-            selected = null;
-            currentDice.ResetSelected();
+            selectedToolCard = null;
+            selectedDie = null;
+            draftPool.ResetSelected();
+        }
+
+        private ToolCard GetSelectedToolCard(int x, int y)
+        {
+            foreach (ToolCard t in toolCardArray)
+                if (t != null) //TESTING LINE - REMOVE
+                    if (t.IsMouseOn(x, y))
+                        return t;
+
+            return null;
         }
     }
 }

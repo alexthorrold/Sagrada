@@ -51,7 +51,9 @@
     <Compile Include="ColorVarietyCard.cs" />
     <Compile Include="ColumnColorVarietyCard.cs" />
     <Compile Include="ColumnShadeVarietyCard.cs" />
-    <Compile Include="CurrentDice.cs" />
+    <Compile Include="DraftPool.cs" />
+    <Compile Include="DraftToolCard.cs" />
+    <Compile Include="GrozingPliersToolCard.cs" />
     <Compile Include="ShadesCard.cs" />
     <Compile Include="Dice.cs" />
     <Compile Include="DiceHolder.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="ShadeVarietyCard.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="ObjectiveCard.cs" />
+    <Compile Include="ToolCard.cs" />
     <Compile Include="WindowPattern.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
