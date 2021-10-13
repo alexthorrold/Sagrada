@@ -25,10 +25,6 @@ namespace Sagrada
         int roundIndex = 0;
         int currentRoundTurn = 1;
         int toolUsedTurn = 0;
-        //Objective priv1
-        //Objective priv2
-        //Objective pub1
-        //Objective pub2
         //ToolCard tool1
         //ToolCard tool2
         //ToolCard tool3
@@ -44,16 +40,17 @@ namespace Sagrada
 
             windowPattern = new WindowPattern(gamePieces.GetNextRequirements(), 50, 50);
             currentDice.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
-            objectiveArray[0] = gamePieces.GetPrivateCard(10, 500);
-            objectiveArray[1] = gamePieces.GetPrivateCard(300, 500);
+            objectiveArray[0] = gamePieces.GetPrivateCard(10, 300);
+            objectiveArray[1] = gamePieces.GetPrivateCard(300, 300);
+            objectiveArray[2] = gamePieces.GetPublicCard(10, 500);
+            objectiveArray[3] = gamePieces.GetPublicCard(300, 500);
         }
 
-            private void Form1_Paint(object sender, PaintEventArgs e)
+        private void Form1_Paint(object sender, PaintEventArgs e)
         {
             windowPattern.Draw(e.Graphics);
 
             foreach (ObjectiveCard o in objectiveArray)
-                if (o != null) //REMOVE THIS LINE - FOR TESTING ONLY
                     o.Draw(e.Graphics);
 
             if (gameStarted)
@@ -62,10 +59,6 @@ namespace Sagrada
                 currentDice.Draw(e.Graphics);
             }
 
-            //priv1.Draw(e.Graphics);
-            //priv2.Draw(e.Graphics);
-            //pub1.Draw(e.Graphics);
-            //pub2.Draw(e.Graphics);
             //tool1.Draw(e.Graphics);
             //tool2.Draw(e.Graphics);
             //tool3.Draw(e.Graphics);
@@ -112,6 +105,7 @@ namespace Sagrada
                         MessageBox.Show("Maximum placements for this round reached.");
                     }
                 }
+                //Cycles through unplayed dice for the round clicked on
                 else if (roundTracker.IsMouseOn(e.X, e.Y))
                 {
                     roundTracker.Index(e.X, e.Y);
@@ -172,13 +166,14 @@ namespace Sagrada
                 int playerScore = 0;
 
                 foreach (ObjectiveCard o in objectiveArray)
-                    if (o != null) //REMOVE THIS LINE - TESTING ONLY
                         playerScore += o.Score(windowPattern.TileArray);
 
                 if (playerScore > scoreToBeat)
                     MessageBox.Show("The score to beat was " + scoreToBeat + ".\nYou scored " + playerScore + ".\nYou win!");
                 else
                     MessageBox.Show("The score to beat was " + scoreToBeat + ".\nYou scored " + playerScore + ".\nYou lose!");
+
+                MessageBox.Show(objectiveArray[3].Score(windowPattern.TileArray).ToString());
 
                 buttonNextRound.Hide();
                 currentDice.Clear();

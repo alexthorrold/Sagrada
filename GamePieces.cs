@@ -12,6 +12,7 @@ namespace Sagrada
         private List<Dice> diceList;
         private List<Tile[,]> windowList;
         private List<Color> privColorList;
+        private List<int> usedObjectiveIndex;
 
         private int diceIndex = 0;
         private int windowIndex = 0;
@@ -19,6 +20,8 @@ namespace Sagrada
 
         public GamePieces()
         {
+            usedObjectiveIndex = new List<int>();
+            
             diceList = new List<Dice>();
 
             //Adds the 90 dice to the list of dice
@@ -209,12 +212,59 @@ namespace Sagrada
             return windowList[windowIndex % 4];
         }
 
-        public ColorSumCard GetPrivateCard(int x, int y)
+        public ObjectiveCard GetPrivateCard(int x, int y)
         {
             ColorSumCard card = new ColorSumCard(privColorList[colorIndex], x, y);
             colorIndex++;
 
             return card;
+        }
+
+        public ObjectiveCard GetPublicCard(int x, int y)
+        {
+            Random rand = new Random();
+            int i = rand.Next(9);
+            ObjectiveCard obj;
+
+            //Prevents the same card from being returned twice
+            while (usedObjectiveIndex.Contains(i))
+                i = rand.Next(9);
+
+            usedObjectiveIndex.Add(i);
+
+            //Returns a random public card
+            switch (i)
+            {
+                case 0:
+                    obj = new ColorVarietyCard(x, y);
+                    break;
+                case 1:
+                    obj = new ColumnColorVarietyCard(x, y);
+                    break;
+                case 2:
+                    obj = new ColumnShadeVarietyCard(x, y);
+                    break;
+                case 3:
+                    obj = new RowColorVarietyCard(x, y);
+                    break;
+                case 4:
+                    obj = new RowShadeVarietyCard(x, y);
+                    break;
+                case 5:
+                    obj = new ShadeVarietyCard(x, y);
+                    break;
+                case 6:
+                    obj = new ShadesCard("light", x, y);
+                    break;
+                case 7:
+                    obj = new ShadesCard("medium", x, y);
+                    break;
+                default:
+                    obj = new ShadesCard("deep", x, y);
+                    break;
+            }
+
+            return obj;
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Sagrada
             else
                 img = Image.FromFile(@"..\..\Resources\priv-purple.png");
 
-            paper.DrawImage(img, left, top, 100, 100);
+            paper.DrawImage(img, left, top, 105, 150);
         }
 
         public override int Score(Tile[,] tileArray)
