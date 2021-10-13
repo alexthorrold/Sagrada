@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sagrada
 {
-    class CurrentDice : BoardPiece
+    class CurrentDice : InteractiveBoardPiece
     {
         private const int DICE_PER_ROUND = 4;
 
@@ -32,7 +32,7 @@ namespace Sagrada
             get { return diceArray[selectedIndex]; }
         }
 
-        public bool IsMouseOn(int x, int y)
+        public override bool IsMouseOn(int x, int y)
         {
             if (x >= left && x <= left + Dice.DICE_SIZE * DICE_PER_ROUND + PEN_THICKNESS * (DICE_PER_ROUND - 1) && y >= top && y <= top + Dice.DICE_SIZE)
                 return true;

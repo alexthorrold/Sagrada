@@ -46,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board.cs" />
     <Compile Include="BoardPiece.cs" />
     <Compile Include="ColorSumCard.cs" />
     <Compile Include="CurrentDice.cs" />
@@ -59,6 +58,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="GamePieces.cs" />
+    <Compile Include="InteractiveBoardPiece.cs" />
     <Compile Include="Objective.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

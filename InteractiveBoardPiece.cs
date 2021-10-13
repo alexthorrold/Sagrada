@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
 
 namespace Sagrada
 {
-    public abstract class ObjectiveCard : BoardPiece
+    public abstract class InteractiveBoardPiece : BoardPiece
     {
-        public abstract int Score(Tile[,] tileArray);
+        public abstract bool IsMouseOn(int x, int y);
     }
 }

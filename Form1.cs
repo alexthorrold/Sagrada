@@ -19,7 +19,7 @@ namespace Sagrada
         Dice selected = new Dice(Color.Red, 4);
         //Holds the objectives the player will gain score for,
         //First two spots are private objectives, last two spots are public objectives
-        ColorSumCard[] objectiveArray = new ColorSumCard[4];
+        ObjectiveCard[] objectiveArray = new ObjectiveCard[4];
 
         bool gameStarted = false;
         int roundIndex = 0;
@@ -52,9 +52,9 @@ namespace Sagrada
         {
             windowPattern.Draw(e.Graphics);
 
-            foreach (ColorSumCard c in objectiveArray)
-                if (c != null) //REMOVE THIS LINE - FOR TESTING ONLY
-                    c.Draw(e.Graphics);
+            foreach (ObjectiveCard o in objectiveArray)
+                if (o != null) //REMOVE THIS LINE - FOR TESTING ONLY
+                    o.Draw(e.Graphics);
 
             if (gameStarted)
             {
@@ -171,16 +171,14 @@ namespace Sagrada
                 int scoreToBeat = roundTracker.Total;
                 int playerScore = 0;
 
-                foreach (ColorSumCard c in objectiveArray)
-                    if (c != null) //REMOVE THIS LINE - TESTING ONLY
-                        playerScore += c.Score(windowPattern.TileArray);
+                foreach (ObjectiveCard o in objectiveArray)
+                    if (o != null) //REMOVE THIS LINE - TESTING ONLY
+                        playerScore += o.Score(windowPattern.TileArray);
 
                 if (playerScore > scoreToBeat)
-                    MessageBox.Show("You win!");
+                    MessageBox.Show("The score to beat was " + scoreToBeat + ".\nYou scored " + playerScore + ".\nYou win!");
                 else
-                    MessageBox.Show("You lose!");
-
-                MessageBox.Show(playerScore.ToString());
+                    MessageBox.Show("The score to beat was " + scoreToBeat + ".\nYou scored " + playerScore + ".\nYou lose!");
 
                 buttonNextRound.Hide();
                 currentDice.Clear();

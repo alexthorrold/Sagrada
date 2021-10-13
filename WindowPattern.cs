@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace Sagrada
 {
-    public class WindowPattern : BoardPiece
+    public class WindowPattern : InteractiveBoardPiece
     {
         public const int ROWS = 5;
         public const int COLUMNS = 4;
@@ -61,7 +61,7 @@ namespace Sagrada
             return (y - top) / (Dice.DICE_SIZE + PEN_THICKNESS);
         }
 
-        public bool IsMouseOn(int x, int y)
+        public override bool IsMouseOn(int x, int y)
         {
             if (x >= left && x <= left + Dice.DICE_SIZE * ROWS + PEN_THICKNESS * (ROWS - 1)
                 && y >= top && y <= top + (Dice.DICE_SIZE * COLUMNS + PEN_THICKNESS * (COLUMNS - 1)))

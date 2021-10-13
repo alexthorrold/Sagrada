@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace Sagrada
 {
-    public class ColorSumCard : BoardPiece
+    public class ColorSumCard : ObjectiveCard
     {
         private Color color;
 
@@ -40,7 +40,7 @@ namespace Sagrada
             paper.DrawImage(img, left, top, 100, 100);
         }
 
-        public int Score(Tile[,] tileArray)
+        public override int Score(Tile[,] tileArray)
         {
             int score = 0;
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sagrada
 {
-    class RoundTracker : BoardPiece
+    class RoundTracker : InteractiveBoardPiece
     {
         public const int ROUNDS = 10;
 
@@ -54,7 +54,7 @@ namespace Sagrada
             diceArray[round].Add(d);
         }
 
-        public bool IsMouseOn(int x, int y)
+        public override bool IsMouseOn(int x, int y)
         {
             return x >= left && x <= left + Dice.DICE_SIZE * ROUNDS + PEN_THICKNESS * (ROUNDS - 1) && y >= top && y <= top + Dice.DICE_SIZE;
         }
