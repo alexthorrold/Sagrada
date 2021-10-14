@@ -37,7 +37,7 @@ namespace Sagrada
             // 
             // buttonProceed
             // 
-            this.buttonProceed.Location = new System.Drawing.Point(301, 525);
+            this.buttonProceed.Location = new System.Drawing.Point(555, 495);
             this.buttonProceed.Name = "buttonProceed";
             this.buttonProceed.Size = new System.Drawing.Size(75, 23);
             this.buttonProceed.TabIndex = 0;
@@ -47,7 +47,7 @@ namespace Sagrada
             // 
             // buttonPrevious
             // 
-            this.buttonPrevious.Location = new System.Drawing.Point(180, 533);
+            this.buttonPrevious.Location = new System.Drawing.Point(474, 495);
             this.buttonPrevious.Name = "buttonPrevious";
             this.buttonPrevious.Size = new System.Drawing.Size(75, 23);
             this.buttonPrevious.TabIndex = 1;
@@ -57,7 +57,7 @@ namespace Sagrada
             // 
             // buttonNext
             // 
-            this.buttonNext.Location = new System.Drawing.Point(433, 533);
+            this.buttonNext.Location = new System.Drawing.Point(636, 495);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(75, 23);
             this.buttonNext.TabIndex = 2;
@@ -67,7 +67,7 @@ namespace Sagrada
             // 
             // buttonNextRound
             // 
-            this.buttonNextRound.Location = new System.Drawing.Point(654, 560);
+            this.buttonNextRound.Location = new System.Drawing.Point(555, 495);
             this.buttonNextRound.Name = "buttonNextRound";
             this.buttonNextRound.Size = new System.Drawing.Size(75, 23);
             this.buttonNextRound.TabIndex = 3;

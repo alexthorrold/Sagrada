@@ -14,8 +14,8 @@ namespace Sagrada
     {
         GamePieces gamePieces = new GamePieces();
         WindowPattern windowPattern;
-        RoundTracker roundTracker = new RoundTracker(450, 50);
-        CurrentDice currentDice = new CurrentDice(500, 200);
+        RoundTracker roundTracker = new RoundTracker(345, 50);
+        CurrentDice currentDice = new CurrentDice(495, 550);
         Dice selected = new Dice(Color.Red, 4);
         //Holds the objectives the player will gain score for,
         //First two spots are private objectives, last two spots are public objectives
@@ -24,10 +24,6 @@ namespace Sagrada
         bool gameStarted = false;
         int roundIndex = 0;
         int currentRoundTurn = 1;
-        int toolUsedTurn = 0;
-        //ToolCard tool1
-        //ToolCard tool2
-        //ToolCard tool3
 
         public Form1()
         {
@@ -38,7 +34,7 @@ namespace Sagrada
         {
             this.Invalidate();
 
-            windowPattern = new WindowPattern(gamePieces.GetNextRequirements(), 50, 50);
+            windowPattern = new WindowPattern(gamePieces.GetNextRequirements(), 470, 250);
             currentDice.SetDice(gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice(), gamePieces.GetDice());
             objectiveArray[0] = gamePieces.GetPrivateCard(10, 300);
             objectiveArray[1] = gamePieces.GetPrivateCard(300, 300);
@@ -58,10 +54,6 @@ namespace Sagrada
                 roundTracker.Draw(e.Graphics);
                 currentDice.Draw(e.Graphics);
             }
-
-            //tool1.Draw(e.Graphics);
-            //tool2.Draw(e.Graphics);
-            //tool3.Draw(e.Graphics);
         }
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
@@ -154,7 +146,6 @@ namespace Sagrada
 
             roundIndex++;
             currentRoundTurn = 1;
-            toolUsedTurn = 0;
 
             ResetSelected();
 

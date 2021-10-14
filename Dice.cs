@@ -15,16 +15,14 @@ namespace Sagrada
         private Color color;
         private int number;
 
+        DrawDots[] drawDotsFunc;
+
         public Dice(Color c, int i)
         {
             color = c;
             number = i;
-        }
 
-        public Dice(Color c, int i, int x, int y)
-        {
-            color = c;
-            number = i;
+            drawDotsFunc = new DrawDots[] { drawOneDot, drawTwoDots, drawThreeDots, drawFourDots, drawFiveDots, drawSixDots };
         }
 
         public Color Color
@@ -37,28 +35,21 @@ namespace Sagrada
             get { return number; }
         }
 
-        public bool PlacementCheck(Dice d)
-        {
-            if (color == d.Color || number == d.Number)
-                return false;
-            return true;
-        }
-
-        public void Flip()
-        {
-            if (number == 1)
-                number = 6;
-            else if (number == 2)
-                number = 5;
-            else if (number == 3)
-                number = 4;
-            else if (number == 4)
-                number = 3;
-            else if (number == 5)
-                number = 2;
-            else
-                number = 1;
-        }
+        //public void Flip()
+        //{
+        //    if (number == 1)
+        //        number = 6;
+        //    else if (number == 2)
+        //        number = 5;
+        //    else if (number == 3)
+        //        number = 4;
+        //    else if (number == 4)
+        //        number = 3;
+        //    else if (number == 5)
+        //        number = 2;
+        //    else
+        //        number = 1;
+        //}
 
         public void Draw(Graphics paper, int x, int y)
         {
@@ -68,7 +59,14 @@ namespace Sagrada
             paper.DrawRectangle(pen, x, y, DICE_SIZE, DICE_SIZE);
             paper.FillRectangle(br, x, y, DICE_SIZE, DICE_SIZE);
 
-            DrawDots(paper, x, y);
+            br.Color = Color.Black;
+
+            //FIX TILES TOO
+            if (number != 0)
+            {
+                DrawDots drawDots = drawDotsFunc[Number - 1];
+                drawDots(paper, br, x, y);
+            }
         }
 
         public void Draw(Graphics paper, int x, int y, Color c)
@@ -79,32 +77,61 @@ namespace Sagrada
             paper.DrawRectangle(pen, x, y, DICE_SIZE, DICE_SIZE);
             paper.FillRectangle(br, x, y, DICE_SIZE, DICE_SIZE);
 
-            DrawDots(paper, x, y);
+            br.Color = Color.Black;
+
+            if (number != 0)
+            {
+                DrawDots drawDots = drawDotsFunc[Number - 1];
+                drawDots(paper, br, x, y);
+            }
         }
 
-        private void DrawDots(Graphics paper, int x, int y)
+        //Delegate code credited to Professor Shaoqun Wu
+        private delegate void DrawDots(Graphics paper, Brush br, int x, int y);
+
+        DrawDots drawOneDot = (g, br, x, y) =>
         {
-            SolidBrush br = new SolidBrush(Color.Black);
+            g.FillEllipse(br, x + (float)16.75, y + (float)16.75, DOT_SIZE, DOT_SIZE);
+        };
 
-            if (number == 1 || number == 3 || number == 5)
-            {
-                paper.FillEllipse(br, x + (float)16.75, y + (float)16.75, DOT_SIZE, DOT_SIZE);
-            }
-            if (number > 1)
-            {
-                paper.FillEllipse(br, x, y, DOT_SIZE, DOT_SIZE);
-                paper.FillEllipse(br, x + 33, y + 33, DOT_SIZE, DOT_SIZE);
-            }
-            if (number > 3)
-            {
-                paper.FillEllipse(br, x + 33, y, DOT_SIZE, DOT_SIZE);
-                paper.FillEllipse(br, x, y + 33, DOT_SIZE, DOT_SIZE);
-            }
-            if (number == 6)
-            {
-                paper.FillEllipse(br, x, y + (float)16.75, DOT_SIZE, DOT_SIZE);
-                paper.FillEllipse(br, x + 33, y + (float)16.75, DOT_SIZE, DOT_SIZE);
-            }
-        }
+        DrawDots drawTwoDots = (g, br, x, y) =>
+        {
+            g.FillEllipse(br, x, y, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x + 33, y + 33, DOT_SIZE, DOT_SIZE);
+        };
+
+        DrawDots drawThreeDots = (g, br, x, y) =>
+        {
+            g.FillEllipse(br, x + (float)16.75, y + (float)16.75, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x, y, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x + 33, y + 33, DOT_SIZE, DOT_SIZE);
+        };
+
+        DrawDots drawFourDots = (g, br, x, y) =>
+        {
+            g.FillEllipse(br, x, y, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x + 33, y + 33, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x + 33, y, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x, y + 33, DOT_SIZE, DOT_SIZE);
+        };
+
+        DrawDots drawFiveDots = (g, br, x, y) =>
+        {
+            g.FillEllipse(br, x + (float)16.75, y + (float)16.75, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x, y, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x + 33, y + 33, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x + 33, y, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x, y + 33, DOT_SIZE, DOT_SIZE);
+        };
+
+        DrawDots drawSixDots = (g, br, x, y) =>
+        {
+            g.FillEllipse(br, x, y, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x + 33, y + 33, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x + 33, y, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x, y + 33, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x, y + (float)16.75, DOT_SIZE, DOT_SIZE);
+            g.FillEllipse(br, x + 33, y + (float)16.75, DOT_SIZE, DOT_SIZE);
+        };
     }
 }

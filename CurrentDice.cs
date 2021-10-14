@@ -55,10 +55,10 @@ namespace Sagrada
             ResetSelected();
         }
 
-        public void FlipSelected()
-        {
-            diceArray[selectedIndex].Flip();
-        }
+        //public void FlipSelected()
+        //{
+        //    diceArray[selectedIndex].Flip();
+        //}
 
         public void Clear()
         {
